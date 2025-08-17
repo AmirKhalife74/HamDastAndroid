@@ -1,0 +1,30 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme -->
+    <style name="Theme.MyApp" parent="Theme.Material3.Light.NoActionBar">
+        <!-- رنگ‌ها -->
+        <item name="colorPrimary">@color/light_primary</item>
+        <item name="colorPrimaryVariant">@color/light_primary_variant</item>
+        <item name="colorSecondary">@color/light_secondary</item>
+
+        <!-- بک‌گراندها -->
+        <item name="android:colorBackground">@color/light_background</item>
+        <item name="colorSurface">@color/light_surface</item>
+
+        <!-- متن -->
+        <item name="android:textColorPrimary">@color/light_text_primary</item>
+        <item name="android:textColorSecondary">@color/light_text_secondary</item>
+
+        <!-- Error و Success -->
+        <item name="colorError">@color/light_error</item>
+        <item name="colorOnPrimary">@color/light_success</item>
+
+        <!-- استاتوس بار -->
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
+        <item name="android:navigationBarColor">@color/light_background</item>
+
+        <!-- RTL ساپورت -->
+        <item name="android:supportsRtl">true</item>
+    </style>
+
+</resources>
