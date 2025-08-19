@@ -40,6 +40,8 @@ android {
 }
 
 dependencies {
+
+    implementation (libs.lottie)
     implementation (libs.circleindicator)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

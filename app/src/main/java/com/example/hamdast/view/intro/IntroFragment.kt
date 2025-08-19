@@ -41,6 +41,10 @@ class IntroFragment : Fragment() {
                page.alpha = 0.25f + (1 - abs(position))
                page.scaleY = 0.75f + (1 - abs(position)) * 0.25f
            }
+
+
+
+
        }
 
 

@@ -7,6 +7,9 @@
         <item name="colorPrimaryVariant">@color/light_primary_variant</item>
         <item name="colorSecondary">@color/light_secondary</item>
 
+        <item name="android:fontFamily">@font/iran_yekan_mobile_regular</item>
+
+
         <!-- بک‌گراندها -->
         <item name="android:colorBackground">@color/light_background</item>
         <item name="colorSurface">@color/light_surface</item>

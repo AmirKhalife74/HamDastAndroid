@@ -1,10 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/android:colorBackground"
     android:layout_height="match_parent"
     tools:context=".view.intro.pages.IntroFragment1">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animationView"
+        android:layout_width="wrap_content"
+        android:layout_height="330dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="tick.json"
+        app:lottie_loop="false" />
+
+    <TextView
+        android:id="@+id/tv_intro1_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="تیتر"
+        android:textSize="24sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/animationView"
+        app:layout_constraintStart_toStartOf="@+id/animationView"
+        app:layout_constraintTop_toBottomOf="@+id/animationView" />
+
+    <TextView
+        android:id="@+id/tc_intro1_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="متن در مورد تیتر"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_intro1_title"
+        app:layout_constraintStart_toStartOf="@+id/tv_intro1_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_intro1_title" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
