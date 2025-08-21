@@ -6,33 +6,38 @@ import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.navigation.NavController
+import androidx.navigation.NavOptions
+import com.example.hamdast.R
 import kotlin.math.hypot
 
-class Animations {
+fun hideButtonWithFade(view: View) {
+    view.animate()
+        .alpha(0f)
+        .setDuration(300)
+        .withEndAction {
+            view.visibility = View.GONE
+        }
+        .start()
+}
 
-     private fun toggleThemeWithAnimation(rootLayOut: View,isDarkMode:Boolean) {
-        val cx = rootLayOut.width / 2
-        val cy = rootLayOut.height / 2
-        val finalRadius = hypot(cx.toDouble(), cy.toDouble()).toFloat()
-
-        val reveal = ViewAnimationUtils.createCircularReveal(
-            rootLayOut, cx, cy, 0f, finalRadius
-        )
-        reveal.duration = 500
-        reveal.interpolator = AccelerateDecelerateInterpolator()
-
-             reveal.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-                super.onAnimationEnd(animation)
-                val mode = if (isDarkMode)
-                    AppCompatDelegate.MODE_NIGHT_YES
-                else
-                    AppCompatDelegate.MODE_NIGHT_NO
-
-                AppCompatDelegate.setDefaultNightMode(mode)
-            }
-        })
-
-        reveal.start()
+ fun showButtonWithFade(view: View) {
+    view.apply {
+        alpha = 0f
+        visibility = View.VISIBLE
+        animate()
+            .alpha(1f)
+            .setDuration(300)
+            .start()
     }
+}
+
+fun NavController.navigateWithAnim(actionId: Int) {
+    val options = NavOptions.Builder()
+        .setEnterAnim(R.anim.slide_in_right)
+        .setExitAnim(R.anim.slide_out_left)
+        .setPopEnterAnim(R.anim.slide_in_left)
+        .setPopExitAnim(R.anim.slide_out_right)
+        .build()
+    this.navigate(actionId, null, options)
 }
