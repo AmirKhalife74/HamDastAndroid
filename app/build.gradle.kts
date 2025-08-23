@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id ("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
+
 }
 
 android {
@@ -50,7 +53,29 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+
+    implementation (libs.hilt.android)
+    kapt (libs.hilt.android.compiler)
+
+    // Hilt ViewModel support
+    implementation (libs.androidx.hilt.lifecycle.viewmodel)
+    kapt (libs.androidx.hilt.compiler)
+
+    // Room
+    implementation (libs.androidx.room.runtime)
+    kapt (libs.androidx.room.compiler)
+    implementation (libs.androidx.room.ktx) // اضافه کردن برای پشتیبانی از کوروتین‌ها
+
+// برای کوروتین‌ها
+    implementation (libs.androidx.room.ktx.v261)
+
+// برای ViewModel
+    implementation (libs.androidx.hilt.lifecycle.viewmodel.v100alpha03)
+    kapt (libs.androidx.hilt.compiler.v100)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+
 }

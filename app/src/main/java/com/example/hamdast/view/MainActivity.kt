@@ -13,7 +13,9 @@ import androidx.navigation.fragment.findNavController
 
 import com.example.hamdast.R
 import com.example.hamdast.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
