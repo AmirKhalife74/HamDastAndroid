@@ -1,19 +1,23 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    id ("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
-
+    alias(libs.plugins.jetbrains.kotlin.android)
+    // Navigation Component
+    alias(libs.plugins.navigation.safeargs)
+    // Kotlin Kapt for Moshi
+    alias(libs.plugins.kotlin.kapt)
+    // Dagger Hilt
+    alias(libs.plugins.dagger.hilt)
+    id("com.google.devtools.ksp")
 }
 
 android {
     namespace = "com.example.hamdast"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.hamdast"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -29,6 +33,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -44,38 +49,64 @@ android {
 
 dependencies {
 
-    implementation (libs.lottie)
-    implementation (libs.circleindicator)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
-
-    implementation (libs.hilt.android)
-    kapt (libs.hilt.android.compiler)
-
-    // Hilt ViewModel support
-    implementation (libs.androidx.hilt.lifecycle.viewmodel)
-    kapt (libs.androidx.hilt.compiler)
-
-    // Room
-    implementation (libs.androidx.room.runtime)
-    kapt (libs.androidx.room.compiler)
-    implementation (libs.androidx.room.ktx) // اضافه کردن برای پشتیبانی از کوروتین‌ها
-
-// برای کوروتین‌ها
-    implementation (libs.androidx.room.ktx.v261)
-
-// برای ViewModel
-    implementation (libs.androidx.hilt.lifecycle.viewmodel.v100alpha03)
-    kapt (libs.androidx.hilt.compiler.v100)
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
 
+    // Room Database
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+
+
+    kapt(libs.androidx.room.compiler)
+
+    // Lifecycle
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.livedata.core.ktx)
+    implementation(libs.androidx.lifecycle.extensions)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidxTransition)
+
+    // Navigation Compnenet
+    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.navigation.ui.ktx)
+
+    // OkHttp
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.okhttp.logging)
+    // Moshi
+    implementation(libs.moshi)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.moshi.adapters)
+    kapt(libs.moshi.kotlin.codegen)
+
+    //Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.moshi)
+
+
+    // Lotie
+    implementation(libs.android.lottie)
+
+    implementation ("me.relex:circleindicator:2.1.6")
+    // Hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+
+    // Glide
+    implementation(libs.glide)
+    kapt(libs.glide.compiler)
+
+    // Coroutines
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.android)
 }
