@@ -23,9 +23,9 @@ class TaskViewModel @Inject constructor( private val userRepository: TasksReposi
         }
     }
 
-    fun addTask(title: String) {
+    fun addTask(taskModel: TaskModel) {
         viewModelScope.launch {
-            userRepository.addNewTask(TaskModel(title = title))
+            userRepository.addNewTask(taskModel)
         }
     }
 
