@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.hamdast.R
 import com.example.hamdast.data.models.TaskModel
 import com.example.hamdast.databinding.FragmentHomeBinding
@@ -58,7 +60,7 @@ class HomeFragment : Fragment() {
         binding.apply {
             items?.let { tasks ->
                 val adapter = TaskListAdapter(tasks)
-                rcTasks.layoutManager = GridLayoutManager(requireContext(),8)
+                rcTasks.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
                 rcTasks.adapter = adapter
 
             }

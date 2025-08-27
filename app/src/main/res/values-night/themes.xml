@@ -9,6 +9,7 @@
 
 
         <item name="android:fontFamily">@font/iran_yekan_mobile_regular</item>
+        <item name="android:layoutDirection">rtl</item>
 
         <!-- بک‌گراندها -->
         <item name="android:colorBackground">@color/dark_background</item>

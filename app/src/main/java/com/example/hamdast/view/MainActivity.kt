@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init(){
-        //window.decorView.layoutDirection = View.LAYOUT_DIRECTION_RTL
+        // window.decorView.layoutDirection = View.LAYOUT_DIRECTION_RTL
     }
 
     private fun observe(){

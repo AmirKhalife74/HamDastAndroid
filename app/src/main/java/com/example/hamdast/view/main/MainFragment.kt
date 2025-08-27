@@ -5,17 +5,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.hamdast.R
 import com.example.hamdast.databinding.FragmentMainBinding
+import com.example.hamdast.utils.addNewTask
+import com.example.hamdast.view.viewmodels.TaskViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlin.getValue
 
-
+@AndroidEntryPoint
 class MainFragment : Fragment() {
 
     private lateinit var  binding: FragmentMainBinding
+    private val viewModel: TaskViewModel by viewModels()
     private var navHost: NavHostFragment? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,7 +48,14 @@ class MainFragment : Fragment() {
 
         }
     }
-    private fun listen(){}
+    private fun listen(){
+        binding.apply {
+            fabAddTask.setOnClickListener {
+                addNewTask(viewModel = viewModel)
+            }
+        }
+
+    }
     private fun observe(){}
 
 
