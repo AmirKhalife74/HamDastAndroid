@@ -1,5 +1,6 @@
 package com.example.hamdast.utils
 
+import android.app.Activity
 import android.app.Dialog
 import android.graphics.Color
 
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.example.hamdast.databinding.DialogAddNewTaskBinding
 import androidx.core.graphics.drawable.toDrawable
 import com.example.hamdast.data.models.TaskModel
+import com.example.hamdast.databinding.DialogAreYouSureBinding
 import com.example.hamdast.view.viewmodels.TaskViewModel
 
 fun Fragment.addNewTask(
@@ -29,16 +31,83 @@ fun Fragment.addNewTask(
         dialog.setCancelable(true)
 
         binding.apply {
+            btnAddNewTask.setOnClickListener {
+                var task = TaskModel(
+                    title = edtNewTaskTitle.text.toString(),
+                    desc = edtDesc.text.toString(),
+                    date = ""
+                )
+                viewModel.addTask(task)
+                dialog.dismiss()
+            }
+            btnDismiss.setOnClickListener {
+                dialog.dismiss()
+            }
 
-                btnAddNewTask.setOnClickListener {
-                    var task = TaskModel(
-                        title = edtNewTaskTitle.text.toString(),
-                        desc = edtDesc.text.toString(),
-                        date = ""
-                    )
-                    viewModel.addTask(task)
-                    dialog.dismiss()
-                }
+        }
+
+        dialog.show()
+
+    }
+}
+
+fun Activity.areYouSureDialog(
+    title: String,
+    desc: String,
+    callback: (result: Boolean) -> Unit
+) {
+
+        val binding = DialogAreYouSureBinding.inflate(LayoutInflater.from(this))
+        val dialog = Dialog(this)
+        dialog.setContentView(binding.root)
+        dialog.window!!.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
+        dialog.window!!.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog.window!!.setGravity(Gravity.BOTTOM)
+
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.setCancelable(true)
+
+        binding.apply {
+            tvTitle.text = title
+            tvDesc.text = desc
+
+            btnAccept.setOnClickListener {
+                callback(true)
+                dialog.dismiss()
+            }
+            btnDismiss.setOnClickListener {
+                dialog.dismiss()
+            }
+
+        }
+
+
+        dialog.show()
+}
+
+
+fun Fragment.information(
+    title: String,
+    desc: String,
+    callback: () -> String
+) {
+    view?.let {
+        val binding = DialogAreYouSureBinding.inflate(LayoutInflater.from(activity!!))
+        val dialog = Dialog(activity!!)
+        dialog.setContentView(binding.root)
+        dialog.window!!.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
+        dialog.window!!.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog.window!!.setGravity(Gravity.BOTTOM)
+
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.setCancelable(true)
+
+        binding.apply {
+
 
         }
 

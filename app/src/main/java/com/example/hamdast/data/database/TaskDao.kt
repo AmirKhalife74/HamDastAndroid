@@ -21,4 +21,5 @@ interface TaskDao {
 
     @Query("UPDATE tasks SET isDone = :done WHERE id = :id")
     suspend fun updateTaskStatus(id: Int, done: Boolean)
+
 }

@@ -1,15 +1,21 @@
 package com.example.hamdast.view.home.adapter
 
+import android.app.Activity
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import android.view.LayoutInflater
 import com.example.hamdast.data.models.TaskModel
 import com.example.hamdast.databinding.AdapterTaskItemBinding
+import com.example.hamdast.utils.areYouSureDialog
+import com.example.hamdast.view.viewmodels.TaskViewModel
 
 
 class TaskListAdapter(
-    private val items: List<TaskModel>
+    private val items: List<TaskModel>,
+    private val activity: Activity,
+    private val viewModel: TaskViewModel
+
 ) : Adapter<TaskListAdapter.TaskItemHolder>() {
 
 
@@ -22,8 +28,20 @@ class TaskListAdapter(
                 tvDate.text = item.date
                 radioIsDone.isChecked = item.isDone
 
+                radioIsDone.setOnCheckedChangeListener { buttonView, isChecked ->
+                    if (isChecked) {
+                       activity.areYouSureDialog(title = "انجام شد ؟",desc = "آیا از انجام شدن تسک مطمین هستید ؟") { res ->
+                           if (res == true){
+                               viewModel.updateTaskDone(item.id,true)
+                           }
+
+                       }
+                    }
+                }
             }
         }
+
+
     }
 
 

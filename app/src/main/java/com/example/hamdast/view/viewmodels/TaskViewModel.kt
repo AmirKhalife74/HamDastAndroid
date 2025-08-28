@@ -29,6 +29,13 @@ class TaskViewModel @Inject constructor( private val userRepository: TasksReposi
         }
     }
 
+    fun updateTaskDone(id: Int,isDone: Boolean)
+    {
+        viewModelScope.launch {
+            userRepository.updateTask(id,isDone)
+        }
+    }
+
     fun deleteTask(id:Int){
         viewModelScope.launch {
             userRepository.deleteTask(id = id)

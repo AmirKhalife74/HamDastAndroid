@@ -59,8 +59,8 @@ class HomeFragment : Fragment() {
         items = viewModel.tasks.value
         binding.apply {
             items?.let { tasks ->
-                val adapter = TaskListAdapter(tasks)
-                rcTasks.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                val adapter = TaskListAdapter(tasks,requireActivity(),viewModel)
+                rcTasks.layoutManager = LinearLayoutManager(requireContext())
                 rcTasks.adapter = adapter
 
             }
