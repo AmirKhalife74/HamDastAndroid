@@ -3,6 +3,7 @@ package com.example.hamdast.data.repos
 import com.example.hamdast.data.database.TaskDao
 import com.example.hamdast.data.models.TaskModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class TasksRepository @Inject constructor(private val dao: TaskDao) {
@@ -21,5 +22,15 @@ class TasksRepository @Inject constructor(private val dao: TaskDao) {
     suspend fun updateTask(id:Int,done:Boolean){
 
         dao.updateTaskStatus(id = id,done = done)
+    }
+
+    fun getTasksByDate(date: String): Flow<List<TaskModel>> {
+        return dao.getTasksByDate(date)
+    }
+
+    fun getTasksUnMonth(startDate: String,endDate : String):Flow<List<TaskModel>> = flow{
+        dao.getTasksBetween(startDate, endDate).collect { tasks ->
+            emit(tasks)
+        }
     }
 }

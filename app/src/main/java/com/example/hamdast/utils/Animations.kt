@@ -1,15 +1,10 @@
 package com.example.hamdast.utils
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.view.View
-import android.view.ViewAnimationUtils
-import android.view.animation.AccelerateDecelerateInterpolator
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import com.example.hamdast.R
-import kotlin.math.hypot
+
 
 fun hideButtonWithFade(view: View) {
     view.animate()

@@ -16,6 +16,7 @@ import com.example.hamdast.databinding.FragmentHomeBinding
 import com.example.hamdast.view.home.adapter.TaskListAdapter
 import com.example.hamdast.view.viewmodels.TaskViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -59,9 +60,14 @@ class HomeFragment : Fragment() {
         items = viewModel.tasks.value
         binding.apply {
             items?.let { tasks ->
-                val adapter = TaskListAdapter(tasks,requireActivity(),viewModel)
-                rcTasks.layoutManager = LinearLayoutManager(requireContext())
-                rcTasks.adapter = adapter
+                viewModel.viewModelScope.launch {
+                    viewModel.tasks.collect { it ->
+                        val adapter = TaskListAdapter(it,requireActivity(),viewModel)
+                        rcTasks.layoutManager = LinearLayoutManager(requireContext())
+                        rcTasks.adapter = adapter
+                    }
+                }
+
 
             }
 

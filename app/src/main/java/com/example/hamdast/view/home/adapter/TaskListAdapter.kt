@@ -33,8 +33,10 @@ class TaskListAdapter(
                        activity.areYouSureDialog(title = "انجام شد ؟",desc = "آیا از انجام شدن تسک مطمین هستید ؟") { res ->
                            if (res == true){
                                viewModel.updateTaskDone(item.id,true)
+                           }else
+                           {
+                               radioIsDone.isChecked = false
                            }
-
                        }
                     }
                 }
