@@ -3,8 +3,8 @@
     <!-- 🌑 Dark Theme -->
     <color name="dark_background">#121212</color>
     <color name="dark_surface">#1E1E1E</color>
-    <color name="dark_primary">#FF6F00</color>
-    <color name="dark_primary_variant">#FF8F00</color>
+    <color name="dark_primary">#B0B3BF</color>
+    <color name="dark_primary_variant">#D9D9E0</color>
     <color name="dark_secondary">#80CBC4</color>
     <color name="dark_text_primary">#FFFFFF</color>
     <color name="dark_text_secondary">#B0BEC5</color>
@@ -14,11 +14,11 @@
     <!-- ☀️ Light Theme -->
     <color name="light_background">#F9F9F9</color>
     <color name="light_surface">#FFFFFF</color>
-    <color name="light_primary">#FF9800</color>
-    <color name="light_primary_variant">#FB8C00</color>
+    <color name="light_primary">#7C91F4</color>
+    <color name="light_primary_variant">#FED7DEFB</color>
     <color name="light_secondary">#00BCD4</color>
     <color name="light_text_primary">#212121</color>
     <color name="light_text_secondary">#616161</color>
     <color name="light_error">#D32F2F</color>
     <color name="light_success">#388E3C</color>
-</resources>
+</resources> 

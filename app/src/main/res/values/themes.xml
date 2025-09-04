@@ -29,5 +29,17 @@
         <!-- RTL ساپورت -->
         <item name="android:supportsRtl">true</item>
     </style>
+    <style name="RoundCheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/rounded_check_box</item>
+        <item name="android:buttonTint">@null</item>
+    </style>
+
+    <style name="TopRoundedCard">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">25dp</item>
+        <item name="cornerSizeTopRight">25dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
 
 </resources>

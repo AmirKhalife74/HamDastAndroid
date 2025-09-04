@@ -50,7 +50,7 @@ class MainFragment : Fragment() {
     }
     private fun listen(){
         binding.apply {
-            fabAddTask.setOnClickListener {
+            imgAddTask.setOnClickListener {
                 addNewTask(viewModel = viewModel)
             }
         }

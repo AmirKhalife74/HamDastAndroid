@@ -1,5 +1,6 @@
 package com.example.hamdast.view.calendar
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,10 +10,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.airbnb.lottie.utils.Utils
 import com.example.hamdast.data.models.TaskModel
 import com.example.hamdast.databinding.FragmentCalendarBinding
-import com.example.hamdast.utils.daysInMonth
 import com.example.hamdast.utils.generateMonthDays
 import com.example.hamdast.utils.gregorianToPersian
 import com.example.hamdast.utils.persianToGregorian
@@ -32,7 +31,7 @@ class CalendarFragment : Fragment() {
     private var calendarAdapter: CalendarAdapter? = null
 
     private var selectedYear = 1404
-    private var selectedMonth = 8 // آبان (۱ تا ۱۲)
+    private var selectedMonth = 8
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +50,7 @@ class CalendarFragment : Fragment() {
         binding.btnNext.setOnClickListener { moveToNextMonth() }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setupCalendar() {
         val daysList = generateMonthDays(selectedYear, selectedMonth)
 

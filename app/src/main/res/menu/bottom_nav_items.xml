@@ -10,9 +10,6 @@
         android:title="@string/ai_assistance"
         android:icon="@drawable/ic_ai" />
 
-    <item android:id="@+id/none"
-        android:title=""/>
-
     <item
         android:id="@+id/calendarFragment"
         android:title="@string/calendar"
