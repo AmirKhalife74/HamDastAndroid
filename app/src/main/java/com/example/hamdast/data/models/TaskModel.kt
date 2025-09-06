@@ -11,6 +11,11 @@ class TaskModel (
     var title: String,
     var desc:String,
     var isDone: Boolean = false,
-    var date:String
+    var year: Int,
+    var month: Int,
+    var day: Int,
+    var time:Double,
+    var date: String = "$year/$month/$day"
+
 
 )

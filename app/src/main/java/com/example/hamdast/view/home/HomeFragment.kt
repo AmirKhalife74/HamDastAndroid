@@ -1,22 +1,22 @@
 package com.example.hamdast.view.home
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
-import androidx.appcompat.content.res.AppCompatResources.getColorStateList
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hamdast.R
 import com.example.hamdast.data.models.TaskModel
 import com.example.hamdast.databinding.FragmentHomeBinding
+import com.example.hamdast.utils.getCurrentWeek
 import com.example.hamdast.view.home.adapter.TaskListAdapter
+import com.example.hamdast.view.home.adapter.WeeklyDaysAdapter
 import com.example.hamdast.view.viewmodels.TaskViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,8 +26,11 @@ import kotlinx.coroutines.launch
 class HomeFragment : Fragment() {
 
     private val viewModel: TaskViewModel by viewModels()
-    private lateinit var binding:FragmentHomeBinding
-    private var items:List<TaskModel>? = null
+    private lateinit var binding: FragmentHomeBinding
+    private var items: List<TaskModel>? = null
+    private var currentDay: Int = 0
+    private var currentMonth: Int = 0
+    private var currentYear: Int = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,38 +41,56 @@ class HomeFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentHomeBinding.inflate(layoutInflater,container,false)
+        binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
 
-    private fun init(){
+    private fun init() {
         setProgress()
         setButtons()
         setBottomSheet()
         setRecyclerView()
 
+        lifecycleScope.launch {
+            viewModel.getTasksInMonth(1402, 6).collect { tasks ->
+                items = tasks
+                setWeeklyCalendar()
+            }
+        }
 
     }
 
-    private fun listener(){
+    private fun setWeeklyCalendar() {
+        binding.apply {
+            items?.let {
+                it
+                val currentWeek = getCurrentWeek(tasks = it)
+                val weeklyDaysAdapter = WeeklyDaysAdapter(items = currentWeek)
+                var layOutMnger = GridLayoutManager(requireContext(),7)
+                rcWeeklyDays.layoutManager = layOutMnger
+                rcWeeklyDays.adapter = weeklyDaysAdapter
+            }
+        }
+    }
+
+    private fun listener() {
 
     }
 
-    private fun observe(){
+    private fun observe() {
 
     }
 
-    private fun setRecyclerView()
-    {
+    private fun setRecyclerView() {
         items = viewModel.tasks.value
         binding.apply {
             items?.let { tasks ->
                 viewModel.viewModelScope.launch {
                     viewModel.tasks.collect { it ->
-                        val adapter = TaskListAdapter(it,requireActivity(),viewModel)
+                        val adapter = TaskListAdapter(it, requireActivity(), viewModel)
                         rcTasks.layoutManager = LinearLayoutManager(requireContext())
                         rcTasks.adapter = adapter
                     }
@@ -78,12 +99,12 @@ class HomeFragment : Fragment() {
 
             }
 
+
         }
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setProgress()
-    {
+    private fun setProgress() {
         binding.apply {
             val progress = 68
             circularProgressBar.setProgress(progress, true)
@@ -91,8 +112,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setBottomSheet()
-    {
+    private fun setBottomSheet() {
         binding.apply {
             val bottomSheet = binding.bottomSheet
             val behavior = BottomSheetBehavior.from(bottomSheet)
@@ -111,6 +131,7 @@ class HomeFragment : Fragment() {
                         BottomSheetBehavior.STATE_EXPANDED -> {
                             // فول‌اسکرین شد
                         }
+
                         BottomSheetBehavior.STATE_COLLAPSED -> {
                             // برگشت پایین
                         }
@@ -125,19 +146,18 @@ class HomeFragment : Fragment() {
     }
 
 
-    private fun setButtons()
-    {
+    private fun setButtons() {
         binding.apply {
             btnTasks.setOnClickListener {
                 btnHabits.setBackgroundColor(requireContext().resources.getColor(R.color.light_primary_variant))
-                btnHabits.setTextColor(requireContext().resources.getColor( R.color.light_text_primary))
+                btnHabits.setTextColor(requireContext().resources.getColor(R.color.light_text_primary))
                 btnTasks.setBackgroundColor(requireContext().resources.getColor(R.color.light_primary))
                 btnTasks.setTextColor(requireContext().resources.getColor(R.color.dark_text_primary))
             }
 
             btnHabits.setOnClickListener {
                 btnTasks.setBackgroundColor(requireContext().resources.getColor(R.color.light_primary_variant))
-                btnTasks.setTextColor(requireContext().resources.getColor( R.color.light_text_primary))
+                btnTasks.setTextColor(requireContext().resources.getColor(R.color.light_text_primary))
                 btnHabits.setBackgroundColor(requireContext().resources.getColor(R.color.light_primary))
                 btnHabits.setTextColor(requireContext().resources.getColor(R.color.dark_text_primary))
             }

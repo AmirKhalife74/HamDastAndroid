@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+
     <!-- 🌑 Dark Theme -->
     <color name="dark_background">#121212</color>
     <color name="dark_surface">#1E1E1E</color>
@@ -10,6 +12,7 @@
     <color name="dark_text_secondary">#B0BEC5</color>
     <color name="dark_error">#CF6679</color>
     <color name="dark_success">#4CAF50</color>
+
 
     <!-- ☀️ Light Theme -->
     <color name="light_background">#F9F9F9</color>

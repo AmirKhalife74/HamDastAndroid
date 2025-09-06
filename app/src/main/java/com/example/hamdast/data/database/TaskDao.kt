@@ -22,10 +22,22 @@ interface TaskDao {
     @Query("UPDATE tasks SET isDone = :done WHERE id = :id")
     suspend fun updateTaskStatus(id: Int, done: Boolean)
 
-    @Query("SELECT * FROM tasks WHERE date = :date")
-    fun getTasksByDate(date: String): Flow<List<TaskModel>>
+    @Query("SELECT * FROM tasks WHERE year = :year AND month = :month AND day = :day")
+    fun getTasksByDay(year: String,month: String,day: String): Flow<List<TaskModel>>
+
+    @Query("SELECT * FROM tasks WHERE year = :year")
+    fun getTasksByYear(year: String): Flow<List<TaskModel>>
+
+    @Query("SELECT * FROM tasks WHERE year = :year AND month = :month")
+    fun getTasksByMonth(year: String, month: String): Flow<List<TaskModel>>
+
+    @Query("SELECT * FROM tasks WHERE time = :time")
+    fun getTasksByTime(time: String): Flow<List<TaskModel>>
 
     @Query("SELECT * FROM tasks WHERE date BETWEEN :startDate AND :endDate")
     fun getTasksBetween(startDate: String, endDate: String): Flow<List<TaskModel>>
+
+    @Query("SELECT * FROM tasks WHERE date = :date")
+    fun getTasksByDate(date: String): Flow<List<TaskModel>>
 
 }

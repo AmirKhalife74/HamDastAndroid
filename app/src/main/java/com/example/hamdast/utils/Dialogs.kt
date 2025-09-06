@@ -35,7 +35,12 @@ fun Fragment.addNewTask(
                 var task = TaskModel(
                     title = edtNewTaskTitle.text.toString(),
                     desc = edtDesc.text.toString(),
-                    date = ""
+                    date = "",
+                    isDone = false,
+                    year = 1404,
+                    month = 6,
+                    day = 15,
+                    time = 12.0
                 )
                 viewModel.addTask(task)
                 dialog.dismiss()

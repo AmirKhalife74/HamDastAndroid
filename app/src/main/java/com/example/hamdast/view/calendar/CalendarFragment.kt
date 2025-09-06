@@ -16,7 +16,6 @@ import com.example.hamdast.utils.generateMonthDays
 import com.example.hamdast.utils.gregorianToPersian
 import com.example.hamdast.utils.persianToGregorian
 import com.example.hamdast.utils.persionMonth
-import com.example.hamdast.utils.twoDigitConvertor
 import com.example.hamdast.view.calendar.adpter.CalendarAdapter
 import com.example.hamdast.view.home.adapter.TaskListAdapter
 import com.example.hamdast.view.viewmodels.TaskViewModel
@@ -52,25 +51,25 @@ class CalendarFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun setupCalendar() {
-        val daysList = generateMonthDays(selectedYear, selectedMonth)
+
 
         lifecycleScope.launch {
             viewModel.getTasksInMonth(selectedYear, selectedMonth).collect { tasks ->
                 val daysWithTasks = tasks.mapNotNull { task ->
                     val (jy, jm, jd) = gregorianToPersian(
-                        task.date.substring(0, 4).toInt(),
-                        task.date.substring(5, 7).toInt(),
-                        task.date.substring(8, 10).toInt()
+                        task.year,
+                        task.month,
+                        task.day
                     )
                     if (jy == selectedYear && jm == selectedMonth) jd else null
                 }.toSet()
-
+                val daysList = generateMonthDays(selectedYear, selectedMonth,tasks)
                 calendarAdapter = CalendarAdapter(
                     days = daysList,
                     tasksByDay = daysWithTasks,
                     selectedYear = selectedYear,
                     selectedMonth = selectedMonth,
-                    onDayClick = { day -> onDayClicked(day) }
+                    onDayClick = { day -> onDayClicked(day,tasks) }
                 )
 
                 binding.rcCalendar.layoutManager = GridLayoutManager(requireContext(), 7)
@@ -82,18 +81,19 @@ class CalendarFragment : Fragment() {
     }
 
 
-    private fun onDayClicked(day: Int) {
-        val (gy, gm, gd) = persianToGregorian(selectedYear, selectedMonth, day)
-        val selectedDate = "$gy-${twoDigitConvertor(gm)}-${twoDigitConvertor(gd)}"
-
-        lifecycleScope.launch {
-            viewModel.getTasksByDate(selectedDate).collect { tasks ->
-                showTasks(tasks)
+    private fun onDayClicked(day: Int,tasks:List<TaskModel>) {
+        var tasksOfDays = mutableListOf<TaskModel>()
+        tasks.forEach { task ->
+            if (task.day == day){
+                tasksOfDays.add(task)
             }
         }
+        val (gy, gm, gd) = persianToGregorian(selectedYear, selectedMonth, day)
+        showTasks(tasksOfDays)
     }
 
     private fun showTasks(tasks: List<TaskModel>) {
+
         val adapter = TaskListAdapter(tasks, requireActivity(), viewModel)
         binding.rcDayTasks.layoutManager = LinearLayoutManager(requireContext())
         binding.rcDayTasks.adapter = adapter

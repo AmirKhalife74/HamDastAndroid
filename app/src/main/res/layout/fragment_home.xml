@@ -74,7 +74,12 @@
 
       </LinearLayout>
 
-
+      <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/rc_weekly_days"
+          android:orientation="horizontal"
+          android:layout_width="match_parent"
+          android:layout_marginHorizontal="8dp"
+          android:layout_height="wrap_content"/>
 
 
       <com.google.android.material.card.MaterialCardView

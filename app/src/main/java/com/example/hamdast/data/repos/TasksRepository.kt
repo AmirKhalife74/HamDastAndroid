@@ -28,6 +28,10 @@ class TasksRepository @Inject constructor(private val dao: TaskDao) {
         return dao.getTasksByDate(date)
     }
 
+    fun getTasksByMonth(year: Int,month: Int): Flow<List<TaskModel>> {
+        return dao.getTasksByMonth(year = year.toString(), month = month.toString())
+    }
+
     fun getTasksUnMonth(startDate: String,endDate : String):Flow<List<TaskModel>> = flow{
         dao.getTasksBetween(startDate, endDate).collect { tasks ->
             emit(tasks)

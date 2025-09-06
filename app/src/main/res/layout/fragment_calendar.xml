@@ -34,9 +34,69 @@
             android:text="ماه بعد"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:weightSum="7"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="4dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textAlignment="center"
+            android:layout_weight="1"
+            android:text="ش"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:textAlignment="center"
+            android:layout_weight="1"
+            android:text="ی"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+
+            android:textAlignment="center"
+            android:layout_weight="1"
+            android:text="د"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:textAlignment="center"
+            android:layout_weight="1"
+            android:text="س"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:textAlignment="center"
+            android:layout_weight="1"
+            android:text="چ"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="پ"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:textAlignment="center"
+            android:layout_weight="1"
+            android:text="ج"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
     <!-- تقویم -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcCalendar"
+        android:paddingTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

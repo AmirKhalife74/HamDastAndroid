@@ -58,7 +58,7 @@ class TaskViewModel @Inject constructor( private val userRepository: TasksReposi
         val startDate = "$gyStart-${twoDigitConvertor(gmStart)}-${twoDigitConvertor(gdStart)}"
         val endDate = "$gyEnd-${twoDigitConvertor(gmEnd)}-${twoDigitConvertor(gdEnd)}"
 
-        userRepository.getTasksUnMonth(startDate, endDate).collect { tasks ->
+        userRepository.getTasksByMonth(year, month).collect { tasks ->
             emit(tasks)
         }
     }
