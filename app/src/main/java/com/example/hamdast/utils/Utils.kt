@@ -1,16 +1,29 @@
 package com.example.hamdast.utils
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.example.hamdast.data.models.CalendarDay
 import com.example.hamdast.data.models.HabitModel
 import com.example.hamdast.data.models.RepeatType
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import java.time.LocalDate
 
 fun twoDigitConvertor(number: Int): String {
     return if (number < 10) {
         "0$number"
     } else {
         number.toString()
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun CalendarDay.dayOfWeek(): Int {
+    val localDate = LocalDate.of(year, month, day)
+    val dow = localDate.dayOfWeek.value // 1..7
+    return when (dow) {
+        7 -> 6 // Sunday → جمعه
+        else -> dow - 1 // Monday(1) → شنبه(0), Tuesday(2) → یکشنبه(1), ...
     }
 }
 
