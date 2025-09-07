@@ -1,5 +1,8 @@
 package com.example.hamdast.utils
 
+import com.example.hamdast.data.models.CalendarDay
+import com.example.hamdast.data.models.HabitModel
+import com.example.hamdast.data.models.RepeatType
 import java.text.DecimalFormat
 import java.text.NumberFormat
 
@@ -19,4 +22,17 @@ fun moneySeperator(number: Long): String {
 
     val formatter: NumberFormat = DecimalFormat("#,###")
     return formatter.format(num)
+}
+
+fun HabitModel.shouldShowOn(day: CalendarDay): Boolean {
+    return when (repeatType) {
+        RepeatType.DAILY -> true
+        RepeatType.WEEKLY -> daysOfWeek?.contains(day.dayOfWeek()) ?: false
+        RepeatType.MONTHLY -> day.day == dayOfMonth
+        RepeatType.YEARLY -> (day.month == monthOfYear && day.day == dayOfYear)
+        RepeatType.CUSTOM -> {
+            // مثال: روزهای زوج
+            day.day % repeatInterval == 0
+        }
+    }
 }

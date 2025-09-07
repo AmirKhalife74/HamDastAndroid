@@ -1,5 +1,6 @@
 package com.example.hamdast.utils
 
+import android.util.Log
 import com.example.hamdast.data.models.CalendarDay
 import com.example.hamdast.data.models.TaskModel
 import java.text.SimpleDateFormat
@@ -179,190 +180,226 @@ fun persianToGregorian(year: Int, month: Int, day: Int): Triple<Int, Int, Int> {
     }
 
     var gm = 0
-    var gd = days + 2
+    var gd = days + 1 // تغییر از +2 به +1 برای حذف آفست اضافی
     while (gd > gDaysInMonth[gm]) {
         gd -= gDaysInMonth[gm]
         if (gm == 1 && (gy % 4 == 0 && gy % 100 != 0 || gy % 400 == 0)) gd--
         gm++
     }
-    return Triple(gy, gm + 1, gd)
+    val result = Triple(gy, gm + 1, gd)
+    Log.d("PersianToGregorian", "Input: $year/$month/$day -> Output: $gy/${gm + 1}/$gd")
+    return result
 }
 
 
 fun gregorianToPersian(year: Int, month: Int, day: Int): Triple<Int, Int, Int> {
-    val gDaysInMonth = intArrayOf(31,28,31,30,31,30,31,31,30,31,30,31)
-    val jDaysInMonth = intArrayOf(31,31,31,31,31,31,30,30,30,30,30,29)
+    val gDaysInMonth = intArrayOf(0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334)
+    val jDaysInMonth = intArrayOf(31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29)
 
     var gy = year - 1600
     var gm = month - 1
     var gd = day - 1
 
-    var gDayNo = 365*gy + gy/4 - gy/100 + gy/400
+    var gDayNo = 365 * gy + (gy + 3) / 4 - (gy + 99) / 100 + (gy + 399) / 400
     for (i in 0 until gm) gDayNo += gDaysInMonth[i]
-    if (gm > 1 && ((year%4==0 && year%100 !=0) || (year%400==0))) gDayNo += 1
+    if (gm > 1 && ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))) gDayNo++
     gDayNo += gd
 
     var jDayNo = gDayNo - 79
-
     val jNp = jDayNo / 12053
     jDayNo %= 12053
 
-    var jy = 979 + 33*jNp + 4*(jDayNo/1461)
+    var jy = 979 + 33 * jNp + 4 * (jDayNo / 1461)
     jDayNo %= 1461
 
     if (jDayNo >= 366) {
-        jy += (jDayNo-366)/365
-        jDayNo = (jDayNo-366)%365
+        jy += (jDayNo - 1) / 365
+        jDayNo = (jDayNo - 1) % 365
     }
 
     var jm = 0
     var jd = 0
-    for (i in 0..11) {
+    for (i in 0 until 11) {
         if (jDayNo < jDaysInMonth[i]) {
-            jm = i+1
-            jd = jDayNo+1
+            jm = i
+            jd = jDayNo + 1
             break
-        } else {
-            jDayNo -= jDaysInMonth[i]
         }
+        jDayNo -= jDaysInMonth[i]
     }
-    return Triple(jy,jm,jd)
+    if (jDayNo >= jDaysInMonth[11]) {
+        jm = 11
+        jd = jDayNo + 1
+    }
+
+    return Triple(jy, jm + 1, jd)
 }
 
-fun generateMonthDays(year: Int, month: Int,tasks:List<TaskModel>): List<CalendarDay> {
+fun generateMonthDays(year: Int, month: Int, tasks: List<TaskModel>): List<CalendarDay> {
     val days = mutableListOf<CalendarDay>()
 
-    // ۱- پیدا کردن اولین روز ماه شمسی
-    val (gy, gm, gd) = persianToGregorian(year, month, 1)
-    val cal = Calendar.getInstance().apply {
-        set(gy, gm - 1, gd)
-    }
-    val dayOfWeek = cal.get(Calendar.DAY_OF_WEEK) // 1=Sunday .. 7=Saturday
-    val firstDayOfWeek = getWeekDayOfFirstDay(year, month)// شنبه=0 .. جمعه=6
-    // ۲- روزهای ماه قبل (کم‌رنگ)
+    // محاسبه روز اول هفته برای ماه جاری
+    val firstDayOfWeek = getWeekDayOfFirstDay(year, month)
+    Log.d("GenerateMonthDays", "First day of week index: $firstDayOfWeek")
+
+    // اضافه کردن روزهای ماه قبل
     val prevMonth = if (month == 1) 12 else month - 1
     val prevYear = if (month == 1) year - 1 else year
     val prevMonthDays = daysInMonth[prevMonth - 1]
 
     for (i in (prevMonthDays - firstDayOfWeek + 1)..prevMonthDays) {
-        var tasksOfDay = mutableListOf<TaskModel>()
-        tasks.forEach {  task ->
+        val tasksOfDay = tasks.filter {
+            it.year == prevYear && it.month == prevMonth && it.day == i
+        }.toMutableList()
 
-            if (task.year == prevYear && task.month == prevMonth && task.day == i){
-                tasksOfDay.add(task)
-            }
-
-
-        }
-        days.add(CalendarDay(
-            i, month = prevMonth, year = prevYear, isCurrentMonth = false,
-            tasks =tasksOfDay,
-            percentageTaskHasBeenDone = 0,
-        ))
-
+        days.add(
+            CalendarDay(
+                i, month = prevMonth, year = prevYear,
+                isCurrentMonth = false,
+                tasks = tasksOfDay,
+                percentageTaskHasBeenDone = 0
+            )
+        )
     }
 
-    // ۳- روزهای ماه جاری
+    // اضافه کردن روزهای ماه جاری
     val currentMonthDays = daysInMonth[month - 1]
     for (i in 1..currentMonthDays) {
-        var tasksOfDay = mutableListOf<TaskModel>()
-        tasks.forEach {  task ->
+        val tasksOfDay = tasks.filter {
+            it.year == year && it.month == month && it.day == i
+        }.toMutableList()
 
-            if (task.year == prevYear && task.month == prevMonth && task.day == i){
-                tasksOfDay.add(task)
-            }
-
-
-        }
-        days.add(CalendarDay(
-            i, month = month, year = year, isCurrentMonth = true,
-            tasks =tasksOfDay,
-            percentageTaskHasBeenDone = 0,
-        ))
+        days.add(
+            CalendarDay(
+                i, month = month, year = year,
+                isCurrentMonth = true,
+                tasks = tasksOfDay,
+                percentageTaskHasBeenDone = 0
+            )
+        )
     }
 
-    // ۴- روزهای ماه بعد (برای پر شدن جدول ۶×۷)
+    // اضافه کردن روزهای ماه بعد برای تکمیل هفته
+    val nextMonth = if (month == 12) 1 else month + 1
+    val nextYear = if (month == 12) year + 1 else year
+    var nextDay = 1
+
     while (days.size % 7 != 0) {
-        val nextDay = days.size - (currentMonthDays + firstDayOfWeek) + 1
-        days.add(CalendarDay(
-            nextDay, month = month, year = year, isCurrentMonth = false,
-            tasks = mutableListOf<TaskModel>(),
-            percentageTaskHasBeenDone = 0,
-        ))
+        val tasksOfDay = tasks.filter {
+            it.year == nextYear && it.month == nextMonth && it.day == nextDay
+        }.toMutableList()
+
+        days.add(
+            CalendarDay(
+                nextDay, month = nextMonth, year = nextYear,
+                isCurrentMonth = false,
+                tasks = tasksOfDay,
+                percentageTaskHasBeenDone = 0
+            )
+        )
+        nextDay++
     }
 
     return days
 }
-private fun getWeekDayOfFirstDay(jYear: Int, jMonth: Int): Int {
-    // یکم ماه رو به میلادی تبدیل می‌کنیم
+fun getWeekDayOfFirstDay(jYear: Int, jMonth: Int): Int {
     val (gy, gm, gd) = persianToGregorian(jYear, jMonth, 1)
-
     val cal = Calendar.getInstance()
-    cal.set(gy, gm - 1, gd) // ماه میلادی از 0 شروع میشه
+    cal.set(gy, gm - 1, gd)
+    val dayOfWeek = cal.get(Calendar.DAY_OF_WEEK)
 
-    val dayOfWeek = cal.get(Calendar.DAY_OF_WEEK) // SUNDAY=1 ... SATURDAY=7
-
-    // حالا میاریمش روی مدل ایرانی: شنبه=0 ... جمعه=6
+    // تبدیل به شاخص شمسی: شنبه=0، یکشنبه=1، ...، جمعه=6
     return when (dayOfWeek) {
-        Calendar.SATURDAY -> 6
-        else -> dayOfWeek - 1
+        Calendar.SATURDAY -> 0  // شنبه
+        Calendar.SUNDAY -> 1    // یکشنبه
+        Calendar.MONDAY -> 2    // دوشنبه
+        Calendar.TUESDAY -> 3   // سه‌شنبه
+        Calendar.WEDNESDAY -> 4 // چهارشنبه
+        Calendar.THURSDAY -> 5  // پنج‌شنبه
+        Calendar.FRIDAY -> 6    // جمعه
+        else -> 0
     }
 }
-/**
- * بر اساس یک روز شمسی، لیست 7 روز هفته را برمی‌گرداند
- * شنبه = index 0، جمعه = index 6
- */
-fun getWeekForDay(day: CalendarDay,tasks:List<TaskModel>): List<CalendarDay> {
+
+
+
+fun getPersianWeekForDay(day: CalendarDay, tasks: List<TaskModel>): List<CalendarDay> {
+    val week = mutableListOf<CalendarDay>()
+    val todayIndex = getDayOfWeekIndex(day)
+
+    // پیدا کردن شنبه این هفته
+    val saturdayOffset = todayIndex
+    var saturdayYear = day.year
+    var saturdayMonth = day.month
+    var saturdayDay = day.day - saturdayOffset
+
+    // تنظیم تاریخ شنبه
+    while (saturdayDay < 1) {
+        saturdayMonth--
+        if (saturdayMonth < 1) {
+            saturdayMonth = 12
+            saturdayYear--
+        }
+        saturdayDay += daysInMonth[saturdayMonth - 1]
+    }
+
+    // اضافه کردن 7 روز هفته از شنبه شروع می‌شود
+    for (i in 0 until 7) {
+        var targetYear = saturdayYear
+        var targetMonth = saturdayMonth
+        var targetDay = saturdayDay + i
+
+        // مدیریت تغییر ماه
+        while (targetDay > daysInMonth[targetMonth - 1]) {
+            targetDay -= daysInMonth[targetMonth - 1]
+            targetMonth++
+            if (targetMonth > 12) {
+                targetMonth = 1
+                targetYear++
+            }
+        }
+
+        val tasksOfDay = tasks.filter {
+            it.year == targetYear && it.month == targetMonth && it.day == targetDay
+        }.toMutableList()
+
+        week.add(
+            CalendarDay(
+                targetDay, targetMonth, targetYear,
+                true, tasksOfDay, 0
+            )
+        )
+    }
+
+    return week
+}
+fun getDayOfWeekIndex(day: CalendarDay): Int {
     val (gy, gm, gd) = persianToGregorian(day.year, day.month, day.day)
     val cal = Calendar.getInstance()
     cal.set(gy, gm - 1, gd)
-
-    // روز هفته میلادی (SUNDAY=1 ... SATURDAY=7)
-    val dayOfWeek = cal.get(Calendar.DAY_OF_WEEK)
-    // معادل روز هفته ایرانی (شنبه=0 ... جمعه=6)
-    val isoDay = (dayOfWeek + 5) % 7
-
-    // رفتن به شنبه هفته
-    cal.add(Calendar.DAY_OF_MONTH, -isoDay)
-
-    val week = mutableListOf<CalendarDay>()
-    for (i in 0..6) {
-        var tasksOfDay = mutableListOf<TaskModel>()
-        tasks.forEach { task ->
-            if (task.day == day.day && task.month == day.month && task.year == day.year)
-            {
-                tasksOfDay.add(task)
-            }
-        }
-        val c = cal.clone() as Calendar
-        c.add(Calendar.DAY_OF_MONTH, i)
-        val (jy, jm, jd) = gregorianToPersian(
-            c.get(Calendar.YEAR),
-            c.get(Calendar.MONTH) + 1,
-            c.get(Calendar.DAY_OF_MONTH)
-        )
-        week.add(CalendarDay(
-            jd, jm, jy, true,
-            tasks = tasksOfDay,
-            percentageTaskHasBeenDone = day.percentageTaskHasBeenDone,
-
-        ))
+    val dayOfWeek = cal.get(Calendar.DAY_OF_WEEK) // 1=Sunday, 2=Monday, ..., 7=Saturday
+    // تبدیل به شاخص شمسی: شنبه=0، یکشنبه=1، ...، جمعه=6
+    val index = when (dayOfWeek) {
+        Calendar.SUNDAY -> 1    // یکشنبه
+        Calendar.MONDAY -> 2    // دوشنبه
+        Calendar.TUESDAY -> 3   // سه‌شنبه
+        Calendar.WEDNESDAY -> 4 // چهارشنبه
+        Calendar.THURSDAY -> 5  // پنج‌شنبه
+        Calendar.FRIDAY -> 6    // جمعه
+        Calendar.SATURDAY -> 0  // شنبه
+        else -> 0
     }
-    return week
+    Log.d("DayOfWeekTest", "Date: ${day.year}/${day.month}/${day.day}, Gregorian: $gy/$gm/$gd, DayOfWeek: $dayOfWeek, Index: $index")
+    return index
 }
 
-/**
- * لیست ۷ روز هفته جاری (شنبه تا جمعه) بر اساس تاریخ امروز
- */
-fun getCurrentWeek(tasks:List<TaskModel>): List<CalendarDay> {
-    val today = Calendar.getInstance()
-    val (jy, jm, jd) = gregorianToPersian(
-        today.get(Calendar.YEAR),
-        today.get(Calendar.MONTH) + 1,
-        today.get(Calendar.DAY_OF_MONTH)
-    )
-
-    return getWeekForDay(
+fun getCurrentWeek(tasks: List<TaskModel>): List<CalendarDay> {
+    val todayMillis = System.currentTimeMillis()
+    val jy = G2JFromMillis(todayMillis, G2JTypes.YEAR).toInt()
+    val jm = G2JFromMillis(todayMillis, G2JTypes.MONTH).toInt()
+    val jd = G2JFromMillis(todayMillis, G2JTypes.DAY).toInt()
+    Log.d("GetCurrentWeek", "Today Persian: Year=$jy, Month=$jm, Day=$jd")
+    return getPersianWeekForDay(
         CalendarDay(
             jd, jm, jy, true,
             tasks = mutableListOf<TaskModel>(),
@@ -379,8 +416,6 @@ fun getTodayPersianDateParts(): Triple<Int, Int, Int> {
     val day = G2JFromMillis(todayMillis, G2JTypes.DAY).toInt()
     return Triple(year, month, day)
 }
-
-
 
 enum class G2JTypes(value: String) {
     AGE("age"),

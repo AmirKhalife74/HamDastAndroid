@@ -55,7 +55,7 @@ class HomeFragment : Fragment() {
         setRecyclerView()
 
         lifecycleScope.launch {
-            viewModel.getTasksInMonth(1402, 6).collect { tasks ->
+            viewModel.getTasksInMonth(1404, 6).collect { tasks ->
                 items = tasks
                 setWeeklyCalendar()
             }
@@ -68,10 +68,14 @@ class HomeFragment : Fragment() {
             items?.let {
                 it
                 val currentWeek = getCurrentWeek(tasks = it)
-                val weeklyDaysAdapter = WeeklyDaysAdapter(items = currentWeek)
+                val weeklyDaysAdapter = WeeklyDaysAdapter(
+                    items = currentWeek,
+                    context = requireContext()
+                )
                 var layOutMnger = GridLayoutManager(requireContext(),7)
-                rcWeeklyDays.layoutManager = layOutMnger
                 rcWeeklyDays.adapter = weeklyDaysAdapter
+                rcWeeklyDays.layoutManager = layOutMnger
+
             }
         }
     }

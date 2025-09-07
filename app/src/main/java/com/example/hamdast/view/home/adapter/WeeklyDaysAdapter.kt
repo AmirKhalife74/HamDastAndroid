@@ -1,20 +1,20 @@
 package com.example.hamdast.view.home.adapter
 
-import android.app.Activity
+import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import android.view.LayoutInflater
+import com.example.hamdast.R
 import com.example.hamdast.data.models.CalendarDay
-import com.example.hamdast.data.models.TaskModel
-import com.example.hamdast.databinding.AdapterTaskItemBinding
 import com.example.hamdast.databinding.ItemWeeklyDayBinding
-import com.example.hamdast.utils.areYouSureDialog
-import com.example.hamdast.view.viewmodels.TaskViewModel
+import com.example.hamdast.utils.getTodayPersianDateParts
 
 
 class WeeklyDaysAdapter(
     private val items: List<CalendarDay>,
+    private val today: Triple<Int, Int, Int> = getTodayPersianDateParts(),
+    private val context: Context
 ) : Adapter<WeeklyDaysAdapter.WeeklyViewHolder>() {
 
 
@@ -22,7 +22,10 @@ class WeeklyDaysAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CalendarDay) {
             binding.apply {
-              tvProgressDone.text = item.percentageTaskHasBeenDone.toString()
+                if (today.first == item.year && today.second == item.month && today.third == item.day){
+                    crdItem.setCardBackgroundColor(context.resources.getColor( R.color.light_primary_variant))
+                }
+              tvProgressDone.text = item.day.toString()
                 item.percentageTaskHasBeenDone?.let {
                     prgrsTaskDone.progress = it
                 }

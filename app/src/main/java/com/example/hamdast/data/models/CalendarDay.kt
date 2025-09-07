@@ -6,5 +6,6 @@ data class CalendarDay(
     val year: Int,
     val isCurrentMonth: Boolean,
     val tasks:List<TaskModel> = mutableListOf<TaskModel>(),
+//    val isClicked: Boolean,
     val percentageTaskHasBeenDone:Int?
 )

@@ -16,6 +16,4 @@ class TaskModel (
     var day: Int,
     var time:Double,
     var date: String = "$year/$month/$day"
-
-
 )

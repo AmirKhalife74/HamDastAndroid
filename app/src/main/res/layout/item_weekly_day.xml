@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:layout_width="36dp"
+<androidx.cardview.widget.CardView android:layout_width="36dp"
     android:layout_height="36dp"
+    android:id="@+id/crd_item"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="50dp"
+    app:cardElevation="0dp"
     android:layout_gravity="center"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -25,4 +29,4 @@
         android:textSize="14sp"
         android:textColor="?attr/colorPrimary"
         android:textStyle="bold"/>
-</FrameLayout>
+</androidx.cardview.widget.CardView>
