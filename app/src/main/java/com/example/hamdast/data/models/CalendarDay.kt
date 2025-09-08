@@ -5,7 +5,8 @@ data class CalendarDay(
     val month: Int,
     val year: Int,
     val isCurrentMonth: Boolean,
-    val tasks:List<TaskModel> = mutableListOf<TaskModel>(),
+    val tasks:List<TaskModel>? =  emptyList<TaskModel>(),
+    val habits: List<HabitModel>? = emptyList<HabitModel>(),
 //    val isClicked: Boolean,
-    val percentageTaskHasBeenDone:Int?
+    val percentageTaskHasBeenDone:Int? = 0
 )

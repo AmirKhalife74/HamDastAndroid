@@ -1,6 +1,8 @@
 package com.example.hamdast.data.di
 
+import com.example.hamdast.data.database.HabitsDao
 import com.example.hamdast.data.database.TaskDao
+import com.example.hamdast.data.repos.HabitsRepository
 import com.example.hamdast.data.repos.TasksRepository
 import dagger.Module
 import dagger.Provides
@@ -16,5 +18,11 @@ object RepositoryModule {
     @Singleton
     fun provideTasksRepository(taskDao: TaskDao): TasksRepository {
         return TasksRepository(taskDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideHabitRepository(habitsDao: HabitsDao): HabitsRepository {
+        return HabitsRepository(habitsDao)
     }
 }

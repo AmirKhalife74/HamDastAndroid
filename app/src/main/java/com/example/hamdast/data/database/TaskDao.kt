@@ -1,14 +1,19 @@
 package com.example.hamdast.data.database
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
+import com.example.hamdast.data.models.HabitModel
 import com.example.hamdast.data.models.TaskModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TaskDao {
+
+    // Tasks
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(task: TaskModel)
@@ -39,5 +44,10 @@ interface TaskDao {
 
     @Query("SELECT * FROM tasks WHERE date = :date")
     fun getTasksByDate(date: String): Flow<List<TaskModel>>
+
+
+    // Habits
+
+
 
 }

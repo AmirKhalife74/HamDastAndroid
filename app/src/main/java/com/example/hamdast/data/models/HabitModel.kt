@@ -21,14 +21,14 @@ data class HabitModel(
     val repeatInterval: Int = 1,     // مثلا هر 2 روز یکبار، یا هر 3 هفته یکبار
 
     // اگر هفتگی باشه → لیست روزهای هفته (0 = شنبه .. 6 = جمعه)
-    val daysOfWeek: List<Int>? = null,
+    val daysOfWeek: List<Int>?,
 
     // اگر ماهانه باشه → روز مشخص ماه
-    val dayOfMonth: Int? = null,
+    val dayOfMonth: Int?,
 
     // اگر سالانه باشه → ماه و روز مشخص
-    val monthOfYear: Int? = null,
-    val dayOfYear: Int? = null,
+    val monthOfYear: Int?,
+    val dayOfYear: Int?,
 
     // تعداد دفعات در هر روز
     val timesPerDay: Int = 1

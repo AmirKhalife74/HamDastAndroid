@@ -11,8 +11,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.hamdast.R
+import com.example.hamdast.data.models.HabitModel
 import com.example.hamdast.databinding.FragmentMainBinding
+import com.example.hamdast.utils.HabitBottomSheetDialog
 import com.example.hamdast.utils.addNewTask
+import com.example.hamdast.view.viewmodels.HabitViewModel
 import com.example.hamdast.view.viewmodels.TaskViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
@@ -22,6 +25,7 @@ class MainFragment : Fragment() {
 
     private lateinit var  binding: FragmentMainBinding
     private val viewModel: TaskViewModel by viewModels()
+    private val habitViewModel: HabitViewModel by viewModels()
     private var navHost: NavHostFragment? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,7 +55,21 @@ class MainFragment : Fragment() {
     private fun listen(){
         binding.apply {
             imgAddTask.setOnClickListener {
-                addNewTask(viewModel = viewModel)
+                //addNewTask(viewModel = viewModel)
+                val dialog = HabitBottomSheetDialog { habitData ->
+                    // اینجا habitData میاد → مپش می‌کنیم به HabitModel و ذخیره تو دیتابیس
+                    val habit = HabitModel(
+                        title = habitData.title,
+                        desc = habitData.desc,
+                        repeatType = habitData.repeatType,
+                        daysOfWeek = habitData.daysOfWeek,
+                        dayOfMonth = habitData.dayOfMonth,
+                        monthOfYear = habitData.monthOfYear,
+                        dayOfYear = habitData.dayOfYear
+                    )
+                    habitViewModel.addHabit(habit)
+                }
+                dialog.show(parentFragmentManager, "HabitBottomSheet")
             }
         }
 

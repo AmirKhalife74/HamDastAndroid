@@ -3,6 +3,7 @@ package com.example.hamdast.data.di
 import android.content.Context
 import androidx.room.Room
 import com.example.hamdast.data.database.AppDatabase
+import com.example.hamdast.data.database.HabitsDao
 import com.example.hamdast.data.database.TaskDao
 import dagger.Module
 import dagger.Provides
@@ -26,4 +27,7 @@ object DatabaseModule {
 
     @Provides
     fun provideTaskDao(db: AppDatabase): TaskDao = db.taskDao()
+
+    @Provides
+    fun provideHabitsDao(db: AppDatabase): HabitsDao = db.habitDao()
 }

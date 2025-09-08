@@ -20,10 +20,10 @@ fun twoDigitConvertor(number: Int): String {
 @RequiresApi(Build.VERSION_CODES.O)
 fun CalendarDay.dayOfWeek(): Int {
     val localDate = LocalDate.of(year, month, day)
-    val dow = localDate.dayOfWeek.value // 1..7
+    val dow = localDate.dayOfWeek.value // 1=Monday .. 7=Sunday
     return when (dow) {
-        7 -> 6 // Sunday → جمعه
-        else -> dow - 1 // Monday(1) → شنبه(0), Tuesday(2) → یکشنبه(1), ...
+        7 -> 6 // Sunday -> جمعه
+        else -> dow - 1 // Monday(1)->شنبه(0), Tuesday(2)->یکشنبه(1) ...
     }
 }
 
@@ -37,15 +37,24 @@ fun moneySeperator(number: Long): String {
     return formatter.format(num)
 }
 
+
+@RequiresApi(Build.VERSION_CODES.O)
 fun HabitModel.shouldShowOn(day: CalendarDay): Boolean {
     return when (repeatType) {
         RepeatType.DAILY -> true
-        RepeatType.WEEKLY -> daysOfWeek?.contains(day.dayOfWeek()) ?: false
+
+        RepeatType.WEEKLY -> daysOfWeek?.contains(day.dayOfWeek()) == true
+
         RepeatType.MONTHLY -> day.day == dayOfMonth
+
         RepeatType.YEARLY -> (day.month == monthOfYear && day.day == dayOfYear)
+
         RepeatType.CUSTOM -> {
-            // مثال: روزهای زوج
-            day.day % repeatInterval == 0
+            // مثال: هر X روز یکبار (با repeatInterval)
+            val localDate = java.time.LocalDate.of(day.year, day.month, day.day)
+            val startDate = LocalDate.of(day.year, 1, 1) // از اول سال شروع کنیم
+            val daysSinceStart = java.time.temporal.ChronoUnit.DAYS.between(startDate, localDate)
+            daysSinceStart % repeatInterval == 0L
         }
     }
 }

@@ -366,7 +366,8 @@ fun getPersianWeekForDay(day: CalendarDay, tasks: List<TaskModel>): List<Calenda
         week.add(
             CalendarDay(
                 targetDay, targetMonth, targetYear,
-                true, tasksOfDay, 0
+                true, tasksOfDay, null,
+                percentageTaskHasBeenDone = 0
             )
         )
     }

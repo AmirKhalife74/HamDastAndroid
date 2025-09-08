@@ -101,9 +101,18 @@
         android:layout_height="wrap_content"/>
 
     <!-- تسک‌های روز انتخابی -->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcDayTasks"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
+
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/rc_day_habit"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1"/>-->
+
+
 </LinearLayout>

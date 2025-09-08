@@ -6,4 +6,12 @@
     <string name="profile">پروفایل</string>
     <string name="ai_assistance">همدست</string>
     <string name="calendar">تقویم</string>
+
+    <string-array name="repeat_types">
+        <item>روزانه</item>
+        <item>هفتگی</item>
+        <item>ماهانه</item>
+        <item>سالانه</item>
+        <item>سفارشی</item>
+    </string-array>
 </resources>
