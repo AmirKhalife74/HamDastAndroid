@@ -26,6 +26,7 @@ class TaskListAdapter(
                 tvTaskTitle.text = item.title
                 tvDesc.text = item.desc
                 tvDate.text = item.date
+
                 radioIsDone.isChecked = item.isDone
 
                 radioIsDone.setOnCheckedChangeListener { buttonView, isChecked ->

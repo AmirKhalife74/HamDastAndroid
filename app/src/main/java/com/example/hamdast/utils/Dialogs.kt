@@ -31,20 +31,20 @@ fun Fragment.addNewTask(
         dialog.setCancelable(true)
 
         binding.apply {
-            btnAddNewTask.setOnClickListener {
-                var task = TaskModel(
-                    title = edtNewTaskTitle.text.toString(),
-                    desc = edtDesc.text.toString(),
-                    date = "",
-                    isDone = false,
-                    year = 1404,
-                    month = 6,
-                    day = 15,
-                    time = 12.0
-                )
-                viewModel.addTask(task)
-                dialog.dismiss()
-            }
+//            btnAddNewTask.setOnClickListener {
+//                var task = TaskModel(
+//                    title = edtNewTaskTitle.text.toString(),
+//                    desc = edtDesc.text.toString(),
+//                    date = "",
+//                    isDone = false,
+//                    year = 1404,
+//                    month = 6,
+//                    day = 15,
+//                    time = 12.0
+//                )
+//                viewModel.addTask(task)
+//                dialog.dismiss()
+//            }
             btnDismiss.setOnClickListener {
                 dialog.dismiss()
             }

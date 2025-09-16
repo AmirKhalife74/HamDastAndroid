@@ -12,6 +12,7 @@ import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.hamdast.R
 import com.example.hamdast.data.models.HabitModel
+import com.example.hamdast.data.models.TaskModel
 import com.example.hamdast.databinding.FragmentMainBinding
 import com.example.hamdast.utils.HabitBottomSheetDialog
 import com.example.hamdast.utils.addNewTask
@@ -24,7 +25,7 @@ import kotlin.getValue
 class MainFragment : Fragment() {
 
     private lateinit var  binding: FragmentMainBinding
-    private val viewModel: TaskViewModel by viewModels()
+    private val taskViewModel: TaskViewModel by viewModels()
     private val habitViewModel: HabitViewModel by viewModels()
     private var navHost: NavHostFragment? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,25 +56,36 @@ class MainFragment : Fragment() {
     private fun listen(){
         binding.apply {
             imgAddTask.setOnClickListener {
-                //addNewTask(viewModel = viewModel)
-                val dialog = HabitBottomSheetDialog { habitData ->
-                    // اینجا habitData میاد → مپش می‌کنیم به HabitModel و ذخیره تو دیتابیس
-                    val habit = HabitModel(
-                        title = habitData.title,
-                        desc = habitData.desc,
-                        repeatType = habitData.repeatType,
-                        daysOfWeek = habitData.daysOfWeek,
-                        dayOfMonth = habitData.dayOfMonth,
-                        monthOfYear = habitData.monthOfYear,
-                        dayOfYear = habitData.dayOfYear
-                    )
-                    habitViewModel.addHabit(habit)
+                val dialog = HabitBottomSheetDialog { habitData,taskData ->
+
+                    habitData?.let {
+                        val habit = HabitModel(
+                            title = habitData.title,
+                            desc = habitData.desc,
+                            repeatType = habitData.repeatType,
+                            daysOfWeek = habitData.daysOfWeek,
+                            dayOfMonth = habitData.dayOfMonth,
+                            monthOfYear = habitData.monthOfYear,
+                            dayOfYear = habitData.dayOfYear
+                        )
+                        habitViewModel.addHabit(habit)
+                    }
+                    taskData?.let {
+                        taskViewModel.addTask(taskData)
+                    }
+
                 }
                 dialog.show(parentFragmentManager, "HabitBottomSheet")
             }
         }
 
     }
+
+    private fun HabitBottomSheetDialog(function: (TaskModel) -> Unit) {
+
+
+    }
+
     private fun observe(){}
 
 

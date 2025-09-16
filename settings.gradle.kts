@@ -9,6 +9,7 @@ dependencyResolutionManagement {
     repositories {
         maven("https://maven.myket.ir")
         maven("https://jitpack.io")
+
     }
 }
 

@@ -106,6 +106,9 @@ dependencies {
     implementation(libs.glide)
     kapt(libs.glide.compiler)
 
+    //Jalali Date Picker
+    implementation ("com.github.aliab:Persian-Date-Picker-Dialog:1.8.0")
+
     // Coroutines
     implementation(libs.coroutines.core)
     implementation(libs.coroutines.android)

@@ -1,9 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/root"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:padding="16dp">
+    <LinearLayout
+        android:id="@+id/lyt_select_mode"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="64dp"
+        app:cornerRadius="21dp"
+        android:background="@drawable/grey_input_box"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_tasks"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="?attr/colorPrimary"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="کار ها"
+            android:textColor="@color/dark_text_primary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:cornerRadius="21dp" />
+
+        <Button
+            android:id="@+id/btn_habits"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="?attr/colorPrimaryVariant"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:shadowColor="#00FFFFFF"
+            android:text="تکراری"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:translationZ="0dp"
+            app:cornerRadius="21dp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/lyt_add_new_task"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/edt_task_name"
+            android:hint="نام تسک"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <EditText
+            android:id="@+id/edt_task_desc"
+            android:hint="توضیحات تسک"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/categoryDropdownLayout"
+            android:layout_width="match_parent"
+            android:hint="دسته بندی تسک"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+            <AutoCompleteTextView
+                android:id="@+id/categoryDropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/lyt_add_new_habits"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
 
     <EditText
         android:id="@+id/etHabitTitle"
@@ -23,10 +104,64 @@
         android:layout_height="wrap_content"
         android:entries="@array/repeat_types" />
 
-    <Button
-        android:id="@+id/btnSaveHabit"
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/lyt_date"
+        android:gravity="center"
+        android:weightSum="2"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="ذخیره" />
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="تاریخ :"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_selected_date"
+            android:text="1402/12/18"
+            android:textAlignment="center"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:text="زمان :"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_selected_time"
+            android:text="16:25"
+            android:textAlignment="center"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="32dp"
+        android:weightSum="2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            app:cornerRadius="10dp"
+            android:textColor="@color/dark_text_primary"
+            android:layout_height="wrap_content"
+            android:backgroundTint="?attr/colorPrimary"
+            android:text="انصراف"
+            android:layout_weight="1"
+            />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSaveHabit"
+            app:cornerRadius="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="?attr/colorPrimary"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/dark_text_primary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ذخیره" />
+    </LinearLayout>
+
 
 </LinearLayout>

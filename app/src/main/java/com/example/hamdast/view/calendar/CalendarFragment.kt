@@ -74,10 +74,10 @@ class CalendarFragment : Fragment() {
                     if (jy == selectedYear && jm == selectedMonth) jd else null
                 }.toSet()
                 var habitsForDay = emptyList<HabitModel>()
-                habitViewModel.getHabitsInMonth(selectedYear, selectedMonth).collect { habits ->
-                    habitsForDay = habits
-
-                }
+//                habitViewModel.getHabitsInMonth(selectedYear, selectedMonth).collect { habits ->
+//                    habitsForDay = habits
+//
+//                }
                 val daysList = generateMonthDays(selectedYear, selectedMonth,tasks)
                 calendarAdapter = CalendarAdapter(
                     days = daysList,

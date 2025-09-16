@@ -279,6 +279,8 @@ fun generateMonthDays(year: Int, month: Int, tasks: List<TaskModel>): List<Calen
         )
     }
 
+
+
     // اضافه کردن روزهای ماه بعد برای تکمیل هفته
     val nextMonth = if (month == 12) 1 else month + 1
     val nextYear = if (month == 12) year + 1 else year
@@ -321,7 +323,31 @@ fun getWeekDayOfFirstDay(jYear: Int, jMonth: Int): Int {
     }
 }
 
+fun persianDateTimeToMillis(date: String, hour: Int, minute: Int): Long {
+    return try {
+        val parts = date.split("/")
+        val jYear = parts[0].toInt()
+        val jMonth = parts[1].toInt()
+        val jDay = parts[2].toInt()
 
+        // تبدیل به میلادی با تابع خودت
+        val (gy, gm, gd) = persianToGregorian(jYear, jMonth, jDay)
+
+        val cal = Calendar.getInstance()
+        cal.set(Calendar.YEAR, gy)
+        cal.set(Calendar.MONTH, gm - 1) // ماه از 0 شروع میشه
+        cal.set(Calendar.DAY_OF_MONTH, gd)
+        cal.set(Calendar.HOUR_OF_DAY, hour)
+        cal.set(Calendar.MINUTE, minute)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
+
+        cal.timeInMillis
+    } catch (e: Exception) {
+        e.printStackTrace()
+        0L
+    }
+}
 
 fun getPersianWeekForDay(day: CalendarDay, tasks: List<TaskModel>): List<CalendarDay> {
     val week = mutableListOf<CalendarDay>()
