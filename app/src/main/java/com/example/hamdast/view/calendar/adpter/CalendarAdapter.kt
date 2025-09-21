@@ -8,6 +8,7 @@ import com.example.hamdast.R
 import com.example.hamdast.data.models.CalendarDay
 import com.example.hamdast.data.models.TaskModel
 import com.example.hamdast.utils.gregorianToPersian
+import saman.zamani.persiandate.PersianDate
 import java.util.Calendar
 
 class CalendarAdapter(
@@ -15,7 +16,6 @@ class CalendarAdapter(
     private val tasksByDay: List<TaskModel>,
     private val selectedYear: Int,
     private val selectedMonth: Int,
-    private var currentDate: String,
     private val onDayClick: (Int) -> Unit
 ) : RecyclerView.Adapter<CalendarAdapter.DayViewHolder>() {
 
@@ -66,9 +66,9 @@ class CalendarAdapter(
                     tv.setBackgroundResource(R.drawable.bg_day_has_task)
                 }
             }
-            if (getDateFromString(currentDate)[2] == item.day.toString()) {
-                tv.setBackgroundResource(R.drawable.ic_launcher_background)
-            }
+//            if (PersianDate. == item.day.toString()) {
+//                tv.setBackgroundResource(R.drawable.ic_launcher_background)
+//            }
 
 
         }

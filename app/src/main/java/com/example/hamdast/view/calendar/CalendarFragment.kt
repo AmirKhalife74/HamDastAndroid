@@ -86,8 +86,7 @@ class CalendarFragment : Fragment() {
                     tasksByDay = daysWithTasks,
                     selectedYear = selectedYear,
                     selectedMonth = selectedMonth,
-                    onDayClick = { day -> onDayClicked(day, tasks, habitsForDay) },
-                    currentDate = Calend
+                    onDayClick = { day -> onDayClicked(day, tasks, habitsForDay) }
                 )
 
                 binding.rcCalendar.layoutManager = GridLayoutManager(requireContext(), 7)
