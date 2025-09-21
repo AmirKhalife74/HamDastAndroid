@@ -1,10 +1,16 @@
 package com.example.hamdast.utils
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.example.hamdast.data.models.CalendarDay
 import com.example.hamdast.data.models.TaskModel
+import saman.zamani.persiandate.PersianDate
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.util.Calendar
+import java.util.TimeZone
 
 val DAYS_IN_MILLLIS = 86400000
 val WEEK_IN_MILLIS = DAYS_IN_MILLLIS * 7
@@ -323,6 +329,7 @@ fun getWeekDayOfFirstDay(jYear: Int, jMonth: Int): Int {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 fun persianDateTimeToMillis(date: String, hour: Int, minute: Int): Long {
     return try {
         val parts = date.split("/")
@@ -330,25 +337,29 @@ fun persianDateTimeToMillis(date: String, hour: Int, minute: Int): Long {
         val jMonth = parts[1].toInt()
         val jDay = parts[2].toInt()
 
-        // تبدیل به میلادی با تابع خودت
-        val (gy, gm, gd) = persianToGregorian(jYear, jMonth, jDay)
+        val persianDate = PersianDate()
+        persianDate.setShYear(jYear)
+        persianDate.setShMonth(jMonth)
+        persianDate.setShDay(jDay)
 
-        val cal = Calendar.getInstance()
-        cal.set(Calendar.YEAR, gy)
-        cal.set(Calendar.MONTH, gm - 1) // ماه از 0 شروع میشه
-        cal.set(Calendar.DAY_OF_MONTH, gd)
-        cal.set(Calendar.HOUR_OF_DAY, hour)
-        cal.set(Calendar.MINUTE, minute)
-        cal.set(Calendar.SECOND, 0)
-        cal.set(Calendar.MILLISECOND, 0)
+        println("Persian: $jYear/$jMonth/$jDay -> Gregorian: ${persianDate.grgYear}/${persianDate.grgMonth}/${persianDate.grgDay}")
 
-        cal.timeInMillis
+        val gy = persianDate.grgYear
+        val gm = persianDate.grgMonth
+        val gd = persianDate.grgDay
+
+        val localDateTime = LocalDateTime.of(gy, gm, gd, hour, minute)
+        println("LocalDateTime: $localDateTime")
+
+        val zonedDateTime = localDateTime.atZone(ZoneId.of("Asia/Tehran"))
+        val timestamp = zonedDateTime.toInstant().toEpochMilli()
+        println("Generated Timestamp: $timestamp")
+        timestamp
     } catch (e: Exception) {
         e.printStackTrace()
         0L
     }
 }
-
 fun getPersianWeekForDay(day: CalendarDay, tasks: List<TaskModel>): List<CalendarDay> {
     val week = mutableListOf<CalendarDay>()
     val todayIndex = getDayOfWeekIndex(day)

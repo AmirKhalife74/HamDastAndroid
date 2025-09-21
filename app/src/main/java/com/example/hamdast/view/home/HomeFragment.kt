@@ -71,9 +71,6 @@ class HomeFragment : Fragment() {
         }
 
     }
-
-
-
     private fun setWeeklyCalendar() {
         binding.apply {
             items?.let { it ->
@@ -141,11 +138,7 @@ class HomeFragment : Fragment() {
                         rcTasks.adapter = adapter
                     }
                 }
-
-
             }
-
-
         }
     }
 

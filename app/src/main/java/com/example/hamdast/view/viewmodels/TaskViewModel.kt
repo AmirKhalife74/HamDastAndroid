@@ -28,10 +28,13 @@ class TaskViewModel @Inject constructor( private val userRepository: TasksReposi
         }
     }
 
-    fun addTask(taskModel: TaskModel) {
+    fun addTask(taskModel: TaskModel):Long {
+        var newId:Long = 0
         viewModelScope.launch {
-            userRepository.addNewTask(taskModel)
+            newId = userRepository.addNewTask(taskModel)
+
         }
+        return newId
     }
 
     fun updateTaskDone(id: Int,isDone: Boolean)

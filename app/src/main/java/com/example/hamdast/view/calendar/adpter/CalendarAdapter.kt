@@ -6,14 +6,16 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hamdast.R
 import com.example.hamdast.data.models.CalendarDay
+import com.example.hamdast.data.models.TaskModel
 import com.example.hamdast.utils.gregorianToPersian
 import java.util.Calendar
 
 class CalendarAdapter(
     private var days: List<CalendarDay>,
-    private val tasksByDay: Set<Int>,
+    private val tasksByDay: List<TaskModel>,
     private val selectedYear: Int,
     private val selectedMonth: Int,
+    private var currentDate: String,
     private val onDayClick: (Int) -> Unit
 ) : RecyclerView.Adapter<CalendarAdapter.DayViewHolder>() {
 
@@ -59,16 +61,22 @@ class CalendarAdapter(
             tv.setTextColor(Color.BLACK)
             tv.setOnClickListener { onDayClick(item.day) }
 
-            if (tasksByDay.contains(item.day)) {
-                tv.setBackgroundResource(R.drawable.bg_day_has_task)
+            tasksByDay.forEach { taskByDay ->
+                if (taskByDay.day == item.day) {
+                    tv.setBackgroundResource(R.drawable.bg_day_has_task)
+                }
+            }
+            if (getDateFromString(currentDate)[2] == item.day.toString()) {
+                tv.setBackgroundResource(R.drawable.ic_launcher_background)
             }
 
-            if (selectedYear == jToday.first &&
-                selectedMonth == jToday.second &&
-                item.day == jToday.third) {
-                tv.setBackgroundResource(R.drawable.bg_today)
-                tv.setTextColor(Color.WHITE)
-            }
+
         }
+    }
+
+    private fun getDateFromString(date: String): List<String>{
+
+
+        return date.split("/")
     }
 }

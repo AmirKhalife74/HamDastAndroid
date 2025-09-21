@@ -2,6 +2,7 @@ package com.example.hamdast.data.repos
 
 import com.example.hamdast.data.database.TaskDao
 import com.example.hamdast.data.models.TaskModel
+import com.example.hamdast.utils.notifications.TaskScheduler
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -10,8 +11,9 @@ class TasksRepository @Inject constructor(private val dao: TaskDao) {
 
     val tasks: Flow<List<TaskModel>> = dao.getAllTasks()
 
-    suspend fun addNewTask(task:TaskModel){
-        dao.insert(task = task)
+    suspend fun addNewTask(task:TaskModel): Long{
+        var newId = dao.insert(task = task)
+        return newId
     }
 
     suspend fun deleteTask(id: Int)

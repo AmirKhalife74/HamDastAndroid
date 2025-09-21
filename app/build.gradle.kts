@@ -106,6 +106,11 @@ dependencies {
     implementation(libs.glide)
     kapt(libs.glide.compiler)
 
+    //Worker
+    implementation ("androidx.work:work-runtime-ktx:2.10.4")
+
+    //data and time
+    implementation ("com.github.samanzamani:PersianDate:1.7.1")
     //Jalali Date Picker
     implementation ("com.github.aliab:Persian-Date-Picker-Dialog:1.8.0")
 

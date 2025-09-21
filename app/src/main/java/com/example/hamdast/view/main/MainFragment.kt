@@ -16,6 +16,7 @@ import com.example.hamdast.data.models.TaskModel
 import com.example.hamdast.databinding.FragmentMainBinding
 import com.example.hamdast.utils.HabitBottomSheetDialog
 import com.example.hamdast.utils.addNewTask
+import com.example.hamdast.utils.notifications.TaskScheduler
 import com.example.hamdast.view.viewmodels.HabitViewModel
 import com.example.hamdast.view.viewmodels.TaskViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +29,8 @@ class MainFragment : Fragment() {
     private val taskViewModel: TaskViewModel by viewModels()
     private val habitViewModel: HabitViewModel by viewModels()
     private var navHost: NavHostFragment? = null
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
@@ -71,7 +74,9 @@ class MainFragment : Fragment() {
                         habitViewModel.addHabit(habit)
                     }
                     taskData?.let {
-                        taskViewModel.addTask(taskData)
+                        var newId = taskViewModel.addTask(taskData)
+                        taskData.id = newId.toInt()
+                        TaskScheduler.scheduleTaskNotification(context = requireContext(), taskData)
                     }
 
                 }

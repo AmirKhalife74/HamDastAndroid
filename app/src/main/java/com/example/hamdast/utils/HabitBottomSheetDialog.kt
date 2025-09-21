@@ -1,12 +1,14 @@
 package com.example.hamdast.utils
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.annotation.RequiresApi
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import androidx.transition.Visibility
@@ -82,6 +84,7 @@ class HabitBottomSheetDialog(
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun listeners()
     {
         binding.apply {
@@ -99,7 +102,12 @@ class HabitBottomSheetDialog(
                     val time = tvSelectedTime.text.toString()
                     val hour = time.split(":")[0]
                     val minute = time.split(":")[1]
-                    val date = persianDateTimeToMillis(tvSelectedDate.text.toString(),hour = hour.toInt(), minute = minute.toInt())
+
+                    val dateStr = tvSelectedDate.text.toString()
+                    val hourInt = hour.toInt()
+                    val minuteInt = minute.toInt()
+                    println("Input Date: $dateStr, Hour: $hourInt, Minute: $minuteInt")
+                    val date = persianDateTimeToMillis(dateStr, hourInt, minuteInt)
                     val year = tvSelectedDate.text.toString().split("/")[0]
                     val month = tvSelectedDate.text.toString().split("/")[1]
                     val day = tvSelectedDate.text.toString().split("/")[2]

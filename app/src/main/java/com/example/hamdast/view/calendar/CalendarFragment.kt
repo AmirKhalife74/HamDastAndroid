@@ -65,13 +65,15 @@ class CalendarFragment : Fragment() {
 
         lifecycleScope.launch {
             viewModel.getTasksInMonth(selectedYear, selectedMonth).collect { tasks ->
-                val daysWithTasks = tasks.mapNotNull { task ->
+                var daysWithTasks:List<TaskModel> = listOf()
+                    tasks.mapNotNull { task ->
                     val (jy, jm, jd) = gregorianToPersian(
                         task.year,
                         task.month,
                         task.day
                     )
                     if (jy == selectedYear && jm == selectedMonth) jd else null
+                        daysWithTasks = tasks
                 }.toSet()
                 var habitsForDay = emptyList<HabitModel>()
 //                habitViewModel.getHabitsInMonth(selectedYear, selectedMonth).collect { habits ->
@@ -84,7 +86,8 @@ class CalendarFragment : Fragment() {
                     tasksByDay = daysWithTasks,
                     selectedYear = selectedYear,
                     selectedMonth = selectedMonth,
-                    onDayClick = { day -> onDayClicked(day,tasks,habitsForDay) }
+                    onDayClick = { day -> onDayClicked(day, tasks, habitsForDay) },
+                    currentDate = Calend
                 )
 
                 binding.rcCalendar.layoutManager = GridLayoutManager(requireContext(), 7)
@@ -109,7 +112,7 @@ class CalendarFragment : Fragment() {
         )) }
         val (gy, gm, gd) = persianToGregorian(selectedYear, selectedMonth, day)
         showTasks(tasksOfDays)
-        //showHabits(habitsOfDay)
+        showHabits(habitsOfDay)
     }
 
     private fun showTasks(tasks: List<TaskModel>) {
