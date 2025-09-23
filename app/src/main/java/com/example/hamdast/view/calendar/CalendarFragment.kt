@@ -6,12 +6,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.hamdast.data.models.calendar.CalendarDay
 import com.example.hamdast.data.models.habit.HabitModel
 import com.example.hamdast.data.models.task.TaskModel
@@ -47,6 +49,7 @@ class CalendarFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCalendarBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
@@ -55,6 +58,7 @@ class CalendarFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupCalendar()
+
         init()
         binding.btnPrev.setOnClickListener { moveToPrevMonth() }
         binding.btnNext.setOnClickListener { moveToNextMonth() }
@@ -88,6 +92,7 @@ class CalendarFragment : Fragment() {
 
                 binding.rcCalendar.layoutManager = GridLayoutManager(requireContext(), 7)
                 binding.rcCalendar.adapter = calendarAdapter
+                setBottomSheet()
             }
         }
 
@@ -109,9 +114,16 @@ class CalendarFragment : Fragment() {
     }
 
     private fun showTasks(tasks: List<TaskModel>) {
-        val adapter = TaskListAdapter(tasks, requireActivity(), viewModel)
-        binding.rcDayTasks.layoutManager = LinearLayoutManager(requireContext())
-        binding.rcDayTasks.adapter = adapter
+        if (tasks.count() == 0){
+            binding.rcDayTasks.visibility = View.GONE
+            binding.tvNoTasks.visibility = View.VISIBLE
+        }else {
+            binding.rcDayTasks.visibility = View.VISIBLE
+            binding.tvNoTasks.visibility = View.GONE
+            val adapter = TaskListAdapter(tasks, requireActivity(), viewModel)
+            binding.rcDayTasks.layoutManager = LinearLayoutManager(requireContext())
+            binding.rcDayTasks.adapter = adapter
+        }
     }
 
     private fun showHabits(habits: List<HabitModel>) {
@@ -146,11 +158,51 @@ class CalendarFragment : Fragment() {
         setupCalendar()
     }
 
-    private fun init()
-    {
+
+    private fun setBottomSheet(){
         binding.apply {
             val behavior = BottomSheetBehavior.from(bottomSheet)
-            behavior.peekHeight = resources.getDimensionPixelSize(R.dimen.calendar_height)
+            lytCalendar.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    // حذف listener برای جلوگیری از اجرای چندباره
+                    lytCalendar.viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+                    // محاسبه ارتفاع واقعی محتوای lyt_calendar
+                    var contentHeight = 0
+                    for (i in 0 until lytCalendar.childCount) {
+                        contentHeight += lytCalendar.getChildAt(i).height
+                    }
+                    contentHeight += lytCalendar.paddingTop + lytCalendar.paddingBottom
+
+                    // ارتفاع کل صفحه
+                    val displayMetrics = resources.displayMetrics
+                    val screenHeight = displayMetrics.heightPixels
+
+                    // تنظیم peekHeight برای باتم‌شیت: فضای خالی پایین lyt_calendar
+                    val peekHeight = screenHeight - contentHeight
+                    behavior.peekHeight = peekHeight
+
+                    // شروع باتم‌شیت در حالت collapsed
+                    behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                }
+            })
+
+            rcDayTasks.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (!recyclerView.canScrollVertically(-1) && dy < 0) {
+                        behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                    }
+                }
+            })
+
         }
+    }
+    private fun init()
+    {
+//        binding.apply {
+//            val behavior = BottomSheetBehavior.from(bottomSheet)
+//            behavior.peekHeight = resources.getDimensionPixelSize(R.dimen.calendar_height)
+//        }
     }
 }

@@ -55,36 +55,8 @@ class MainFragment : Fragment() {
     }
     private fun listen(){
         binding.apply {
-            imgAddTask.setOnClickListener {
-                val dialog = HabitBottomSheetDialog { habitData,taskData ->
 
-                    habitData?.let {
-                        val habit = HabitModel(
-                            title = habitData.title,
-                            desc = habitData.desc,
-                            repeatType = habitData.repeatType,
-                            daysOfWeek = habitData.daysOfWeek,
-                            dayOfMonth = habitData.dayOfMonth,
-                            monthOfYear = habitData.monthOfYear,
-                            dayOfYear = habitData.dayOfYear
-                        )
-                        habitViewModel.addHabit(habit)
-                    }
-                    taskData?.let {
-                        var newId = taskViewModel.addTask(taskData)
-                        taskData.id = newId.toInt()
-                        TaskScheduler.scheduleTaskNotification(context = requireContext(), taskData)
-                    }
-
-                }
-                dialog.show(parentFragmentManager, "HabitBottomSheet")
-            }
         }
-
-    }
-
-    private fun HabitBottomSheetDialog(function: (TaskModel) -> Unit) {
-
 
     }
 

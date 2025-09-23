@@ -4,40 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:paddingTop="16dp"
   android:layout_height="match_parent">
-
-  <androidx.constraintlayout.widget.ConstraintLayout
-      android:id="@+id/toolbar"
-      android:layout_width="match_parent"
-      android:layout_height="56dp"
-      android:elevation="16dp"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent">
-
-    <ImageView
-        android:id="@+id/img_add_task"
-        android:layout_width="46dp"
-        android:layout_height="46dp"
-        android:src="@drawable/add_circle"
-        android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-  </androidx.constraintlayout.widget.ConstraintLayout>
-
-
   <!-- Nav Host -->
   <androidx.fragment.app.FragmentContainerView
       android:id="@+id/nav_host_main_fragment"
       android:name="androidx.navigation.fragment.NavHostFragment"
       android:layout_width="match_parent"
-      android:layout_height="0dp"
+      android:layout_height="match_parent"
       app:defaultNavHost="true"
       app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/toolbar"
       app:navGraph="@navigation/main_nav" />
 
 

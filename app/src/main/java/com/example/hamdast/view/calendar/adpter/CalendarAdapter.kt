@@ -1,8 +1,10 @@
 package com.example.hamdast.view.calendar.adpter
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hamdast.R
@@ -11,6 +13,7 @@ import com.example.hamdast.data.models.task.TaskModel
 import com.example.hamdast.databinding.ItemDayBinding
 import com.example.hamdast.utils.gregorianToPersian
 import android.view.animation.DecelerateInterpolator
+import androidx.transition.Visibility
 import java.util.Calendar
 
 class CalendarAdapter(
@@ -123,7 +126,7 @@ class CalendarAdapter(
 
                     tasksByDay.forEach { taskByDay ->
                         if (taskByDay.day == item.day) {
-                            tvDay.setBackgroundResource(R.drawable.bg_day_has_task)
+                            hasTask.visibility = View.VISIBLE
                         }
                     }
 

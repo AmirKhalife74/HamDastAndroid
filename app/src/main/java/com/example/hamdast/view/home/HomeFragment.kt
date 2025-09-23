@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -15,9 +16,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hamdast.R
 import com.example.hamdast.data.models.calendar.CalendarDay
+import com.example.hamdast.data.models.habit.HabitModel
 import com.example.hamdast.data.models.task.TaskModel
 import com.example.hamdast.databinding.FragmentHomeBinding
+import com.example.hamdast.utils.HabitBottomSheetDialog
 import com.example.hamdast.utils.getCurrentWeek
+import com.example.hamdast.utils.notifications.TaskScheduler
 import com.example.hamdast.utils.shouldShowOn
 import com.example.hamdast.view.home.adapter.HabitListAdapter
 import com.example.hamdast.view.home.adapter.TaskListAdapter
@@ -38,6 +42,8 @@ class HomeFragment : Fragment() {
     private var currentDay: Int = 0
     private var currentMonth: Int = 0
     private var currentYear: Int = 0
+    private val taskViewModel: TaskViewModel by viewModels()
+    private val habitViewModel: HabitViewModel by viewModels()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,6 +68,7 @@ class HomeFragment : Fragment() {
         setButtons()
         setBottomSheet()
         setRecyclerView()
+
 
         lifecycleScope.launch {
             viewModel.getTasksInMonth(1404, 6).collect { tasks ->
@@ -120,7 +127,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun listener() {
-
+        binding.apply {
+            imgAddNew.setOnClickListener {
+                newTask()
+            }
+        }
     }
 
     private fun observe() {
@@ -153,35 +164,61 @@ class HomeFragment : Fragment() {
 
     private fun setBottomSheet() {
         binding.apply {
-            val bottomSheet = binding.bottomSheet
+
             val behavior = BottomSheetBehavior.from(bottomSheet)
+            // Listener برای محاسبه ارتفاع بعد از layout
+            topContent.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    // Listener رو حذف کن تا فقط یک بار اجرا بشه
+                    topContent.viewTreeObserver.removeOnGlobalLayoutListener(this)
 
+                    // ارتفاع کل top_content (معمولاً برابر screen height چون match_parent)
+                    val topHeight = topContent.height
 
-//            behavior.peekHeight = 1500
-//
-//
-//            behavior.isFitToContents = true
-            behavior.state = BottomSheetBehavior.STATE_COLLAPSED // حالت اولیه
+                    // محاسبه paddingBottom (در px)
+                    val paddingBottomPx = topContent.paddingBottom
 
+                    // ارتفاع واقعی محتوای top_content بدون paddingBottom
+                    // اگر محتوای داخلی wrap_content باشه، می‌تونی جمع ارتفاع کودکان رو محاسبه کنی، اما ساده‌تر:
+                    val displayMetrics = resources.displayMetrics
+                    val screenHeight = displayMetrics.heightPixels
+                    val contentHeight = topHeight - paddingBottomPx  // معمولاً screenHeight - paddingBottom
 
-            behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-                override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    when (newState) {
-                        BottomSheetBehavior.STATE_EXPANDED -> {
-                            // فول‌اسکرین شد
-                        }
+                    // تنظیم peekHeight برای باتم‌شیت: برابر با فضای خالی پایین top_content
+                    // این کار باعث می‌شه در حالت collapsed، باتم‌شیت دقیقاً تا پایین محتوای top_content برسه
+                    val peekHeight = screenHeight - contentHeight  // یا مستقیم paddingBottomPx اگر ثابت باشه
+                    behavior.peekHeight = peekHeight
 
-                        BottomSheetBehavior.STATE_COLLAPSED -> {
-                            // برگشت پایین
-                        }
-                    }
-                }
-
-                override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                    // انیمیشن یا افکت همزمان با درگ
+                    // اختیاری: شروع باتم‌شیت در حالت collapsed
+                    behavior.state = BottomSheetBehavior.STATE_COLLAPSED
                 }
             })
         }
+    }
+
+    private fun newTask(){
+        val dialog = HabitBottomSheetDialog { habitData,taskData ->
+
+            habitData?.let {
+                val habit = HabitModel(
+                    title = habitData.title,
+                    desc = habitData.desc,
+                    repeatType = habitData.repeatType,
+                    daysOfWeek = habitData.daysOfWeek,
+                    dayOfMonth = habitData.dayOfMonth,
+                    monthOfYear = habitData.monthOfYear,
+                    dayOfYear = habitData.dayOfYear
+                )
+                habitViewModel.addHabit(habit)
+            }
+            taskData?.let {
+                var newId = taskViewModel.addTask(taskData)
+                taskData.id = newId.toInt()
+                TaskScheduler.scheduleTaskNotification(context = requireContext(), taskData)
+            }
+
+        }
+        dialog.show(parentFragmentManager, "HabitBottomSheet")
     }
 
 
