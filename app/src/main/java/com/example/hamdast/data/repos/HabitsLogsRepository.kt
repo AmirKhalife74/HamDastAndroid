@@ -1,6 +1,6 @@
 package com.example.hamdast.data.repos
 
-import HabitLog
+import com.example.hamdast.data.models.habit.HabitLog
 import com.example.hamdast.data.database.HabitsLogDao
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

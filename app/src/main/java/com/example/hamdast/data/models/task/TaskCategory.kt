@@ -1,4 +1,4 @@
-package com.example.hamdast.data.models
+package com.example.hamdast.data.models.task
 
 enum class TaskCategory(val displayName: String, val emoji: String) {
     HEALTH("سلامت", "🏃‍♂️"),

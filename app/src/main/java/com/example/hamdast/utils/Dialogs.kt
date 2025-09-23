@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.hamdast.databinding.DialogAddNewTaskBinding
 import androidx.core.graphics.drawable.toDrawable
-import com.example.hamdast.data.models.TaskModel
+import com.example.hamdast.data.models.task.TaskModel
 import com.example.hamdast.databinding.DialogAreYouSureBinding
 import com.example.hamdast.view.viewmodels.TaskViewModel
 

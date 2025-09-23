@@ -3,8 +3,8 @@ package com.example.hamdast.utils
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import com.example.hamdast.data.models.CalendarDay
-import com.example.hamdast.data.models.TaskModel
+import com.example.hamdast.data.models.calendar.CalendarDay
+import com.example.hamdast.data.models.task.TaskModel
 import saman.zamani.persiandate.PersianDate
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime

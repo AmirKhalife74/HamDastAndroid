@@ -14,8 +14,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hamdast.R
-import com.example.hamdast.data.models.CalendarDay
-import com.example.hamdast.data.models.TaskModel
+import com.example.hamdast.data.models.calendar.CalendarDay
+import com.example.hamdast.data.models.task.TaskModel
 import com.example.hamdast.databinding.FragmentHomeBinding
 import com.example.hamdast.utils.getCurrentWeek
 import com.example.hamdast.utils.shouldShowOn

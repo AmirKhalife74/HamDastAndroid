@@ -2,7 +2,7 @@ package com.example.hamdast.view.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.hamdast.data.models.TaskModel
+import com.example.hamdast.data.models.task.TaskModel
 import com.example.hamdast.data.repos.TasksRepository
 import com.example.hamdast.utils.daysInMonth
 import com.example.hamdast.utils.persianToGregorian

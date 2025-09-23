@@ -1,4 +1,7 @@
-package com.example.hamdast.data.models
+package com.example.hamdast.data.models.calendar
+
+import com.example.hamdast.data.models.habit.HabitModel
+import com.example.hamdast.data.models.task.TaskModel
 
 data class CalendarDay(
     val day: Int,

@@ -11,12 +11,11 @@ import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
-import androidx.transition.Visibility
 import com.example.hamdast.R
-import com.example.hamdast.data.models.HabitModel
-import com.example.hamdast.data.models.RepeatType
-import com.example.hamdast.data.models.TaskCategory
-import com.example.hamdast.data.models.TaskModel
+import com.example.hamdast.data.models.habit.HabitModel
+import com.example.hamdast.data.models.habit.RepeatType
+import com.example.hamdast.data.models.task.TaskCategory
+import com.example.hamdast.data.models.task.TaskModel
 import com.example.hamdast.databinding.BottomsheetAddHabitBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -24,7 +23,6 @@ import com.google.android.material.timepicker.TimeFormat
 import ir.hamsaa.persiandatepicker.PersianDatePickerDialog
 import ir.hamsaa.persiandatepicker.api.PersianPickerDate
 import ir.hamsaa.persiandatepicker.api.PersianPickerListener
-import kotlin.Int
 
 class HabitBottomSheetDialog(
     private val onHabitCreated: (HabitModel?, TaskModel?) -> Unit?

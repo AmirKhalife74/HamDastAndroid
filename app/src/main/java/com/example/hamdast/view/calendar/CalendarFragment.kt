@@ -12,13 +12,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.hamdast.data.models.CalendarDay
-import com.example.hamdast.data.models.HabitModel
-import com.example.hamdast.data.models.TaskModel
+import com.example.hamdast.data.models.calendar.CalendarDay
+import com.example.hamdast.data.models.habit.HabitModel
+import com.example.hamdast.data.models.task.TaskModel
 import com.example.hamdast.databinding.FragmentCalendarBinding
 import com.example.hamdast.utils.generateMonthDays
 import com.example.hamdast.utils.gregorianToPersian
 import com.example.hamdast.utils.persianToGregorian
+import com.example.hamdast.R
 import com.example.hamdast.utils.persionMonth
 import com.example.hamdast.utils.shouldShowOn
 import com.example.hamdast.view.calendar.adpter.CalendarAdapter
@@ -26,6 +27,7 @@ import com.example.hamdast.view.home.adapter.HabitListAdapter
 import com.example.hamdast.view.home.adapter.TaskListAdapter
 import com.example.hamdast.view.viewmodels.HabitViewModel
 import com.example.hamdast.view.viewmodels.TaskViewModel
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -53,39 +55,34 @@ class CalendarFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupCalendar()
-
+        init()
         binding.btnPrev.setOnClickListener { moveToPrevMonth() }
         binding.btnNext.setOnClickListener { moveToNextMonth() }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "SuspiciousIndentation")
     private fun setupCalendar() {
-
-
         lifecycleScope.launch {
             viewModel.getTasksInMonth(selectedYear, selectedMonth).collect { tasks ->
-                var daysWithTasks:List<TaskModel> = listOf()
-                    tasks.mapNotNull { task ->
+                var daysWithTasks: List<TaskModel> = listOf()
+                tasks.mapNotNull { task ->
                     val (jy, jm, jd) = gregorianToPersian(
                         task.year,
                         task.month,
                         task.day
                     )
                     if (jy == selectedYear && jm == selectedMonth) jd else null
-                        daysWithTasks = tasks
+                    daysWithTasks = tasks
                 }.toSet()
                 var habitsForDay = emptyList<HabitModel>()
-//                habitViewModel.getHabitsInMonth(selectedYear, selectedMonth).collect { habits ->
-//                    habitsForDay = habits
-//
-//                }
-                val daysList = generateMonthDays(selectedYear, selectedMonth,tasks)
+                val daysList = generateMonthDays(selectedYear, selectedMonth, tasks)
                 calendarAdapter = CalendarAdapter(
                     days = daysList,
                     tasksByDay = daysWithTasks,
                     selectedYear = selectedYear,
                     selectedMonth = selectedMonth,
+                    recyclerView = binding.rcCalendar, // پاس دادن RecyclerView
                     onDayClick = { day -> onDayClicked(day, tasks, habitsForDay) }
                 )
 
@@ -97,25 +94,21 @@ class CalendarFragment : Fragment() {
         binding.tvMonth.text = "${persionMonth[selectedMonth - 1]} $selectedYear"
     }
 
-
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun onDayClicked(day: Int, tasks:List<TaskModel>, habits: List<HabitModel>) {
+    private fun onDayClicked(day: Int, tasks: List<TaskModel>, habits: List<HabitModel>) {
+        calendarAdapter?.updateSelectedDay(day) // آپدیت روز انتخاب‌شده
         var tasksOfDays = mutableListOf<TaskModel>()
         tasks.forEach { task ->
-            if (task.day == day){
+            if (task.day == day) {
                 tasksOfDays.add(task)
             }
         }
-        val habitsOfDay = habits.filter { it.shouldShowOn(CalendarDay(
-            day, selectedMonth, selectedYear, true
-        )) }
-        val (gy, gm, gd) = persianToGregorian(selectedYear, selectedMonth, day)
+        val habitsOfDay = habits.filter { it.shouldShowOn(CalendarDay(day, selectedMonth, selectedYear, true)) }
         showTasks(tasksOfDays)
         showHabits(habitsOfDay)
     }
 
     private fun showTasks(tasks: List<TaskModel>) {
-
         val adapter = TaskListAdapter(tasks, requireActivity(), viewModel)
         binding.rcDayTasks.layoutManager = LinearLayoutManager(requireContext())
         binding.rcDayTasks.adapter = adapter
@@ -126,9 +119,9 @@ class CalendarFragment : Fragment() {
             habits,
             activity = requireActivity(),
             viewModel = habitViewModel
-        ) // باید Adapter مشابه TaskListAdapter بسازی
-//        binding.rcDayHabit.layoutManager = LinearLayoutManager(requireContext())
-//        binding.rcDayHabit.adapter = adapter
+        )
+        // binding.rcDayHabit.layoutManager = LinearLayoutManager(requireContext())
+        // binding.rcDayHabit.adapter = adapter
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -151,5 +144,13 @@ class CalendarFragment : Fragment() {
             selectedMonth++
         }
         setupCalendar()
+    }
+
+    private fun init()
+    {
+        binding.apply {
+            val behavior = BottomSheetBehavior.from(bottomSheet)
+            behavior.peekHeight = resources.getDimensionPixelSize(R.dimen.calendar_height)
+        }
     }
 }

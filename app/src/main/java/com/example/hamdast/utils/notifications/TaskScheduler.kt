@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.example.hamdast.data.models.TaskModel
+import com.example.hamdast.data.models.task.TaskModel
 import com.example.hamdast.worker.NotificationWorker
 import java.util.concurrent.TimeUnit
 

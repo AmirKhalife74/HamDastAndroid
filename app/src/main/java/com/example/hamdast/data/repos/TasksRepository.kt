@@ -1,7 +1,7 @@
 package com.example.hamdast.data.repos
 
 import com.example.hamdast.data.database.TaskDao
-import com.example.hamdast.data.models.TaskModel
+import com.example.hamdast.data.models.task.TaskModel
 import com.example.hamdast.utils.notifications.TaskScheduler
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

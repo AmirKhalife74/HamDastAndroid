@@ -7,11 +7,10 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.hamdast.data.database.HabitsDao
 import com.example.hamdast.data.database.TaskDao
-import com.example.hamdast.data.models.HabitModel
-import com.example.hamdast.data.models.RepeatType
-import com.example.hamdast.data.models.TaskModel
+import com.example.hamdast.data.models.habit.HabitModel
+import com.example.hamdast.data.models.habit.RepeatType
+import com.example.hamdast.data.models.task.TaskModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.withContext
 import java.time.*
 

@@ -2,7 +2,7 @@ package com.example.hamdast.view.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.hamdast.data.models.HabitModel
+import com.example.hamdast.data.models.habit.HabitModel
 import com.example.hamdast.data.repos.HabitsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow

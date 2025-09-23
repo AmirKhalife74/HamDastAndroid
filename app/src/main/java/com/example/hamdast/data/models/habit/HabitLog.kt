@@ -1,3 +1,5 @@
+package com.example.hamdast.data.models.habit
+
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 

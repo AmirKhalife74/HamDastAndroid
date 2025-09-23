@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import android.view.LayoutInflater
 import com.example.hamdast.R
-import com.example.hamdast.data.models.CalendarDay
+import com.example.hamdast.data.models.calendar.CalendarDay
 import com.example.hamdast.databinding.ItemWeeklyDayBinding
 import com.example.hamdast.utils.getTodayPersianDateParts
 

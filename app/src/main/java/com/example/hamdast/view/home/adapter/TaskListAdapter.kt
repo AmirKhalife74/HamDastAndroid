@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import android.view.LayoutInflater
-import com.example.hamdast.data.models.TaskModel
+import com.example.hamdast.data.models.task.TaskModel
 import com.example.hamdast.databinding.AdapterTaskItemBinding
 import com.example.hamdast.utils.areYouSureDialog
 import com.example.hamdast.view.viewmodels.TaskViewModel

@@ -7,15 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
-import androidx.navigation.ui.setupWithNavController
 import com.example.hamdast.R
-import com.example.hamdast.data.models.HabitModel
-import com.example.hamdast.data.models.TaskModel
+import com.example.hamdast.data.models.habit.HabitModel
+import com.example.hamdast.data.models.task.TaskModel
 import com.example.hamdast.databinding.FragmentMainBinding
 import com.example.hamdast.utils.HabitBottomSheetDialog
-import com.example.hamdast.utils.addNewTask
 import com.example.hamdast.utils.notifications.TaskScheduler
 import com.example.hamdast.view.viewmodels.HabitViewModel
 import com.example.hamdast.view.viewmodels.TaskViewModel

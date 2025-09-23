@@ -6,8 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.hamdast.data.models.HabitModel
-import com.example.hamdast.data.models.TaskModel
+import com.example.hamdast.data.models.habit.HabitModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao

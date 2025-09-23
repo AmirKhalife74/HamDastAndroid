@@ -1,9 +1,8 @@
-package com.example.hamdast.data.models
+package com.example.hamdast.data.models.task
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.sql.Date
-import java.sql.Timestamp
+import com.example.hamdast.data.models.task.TaskCategory
 
 @Entity(tableName = "tasks")
 class TaskModel (

@@ -1,6 +1,6 @@
 package com.example.hamdast.data.database
 
-import HabitLog
+import com.example.hamdast.data.models.habit.HabitLog
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy

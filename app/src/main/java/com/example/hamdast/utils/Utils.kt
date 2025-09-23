@@ -2,9 +2,9 @@ package com.example.hamdast.utils
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.example.hamdast.data.models.CalendarDay
-import com.example.hamdast.data.models.HabitModel
-import com.example.hamdast.data.models.RepeatType
+import com.example.hamdast.data.models.calendar.CalendarDay
+import com.example.hamdast.data.models.habit.HabitModel
+import com.example.hamdast.data.models.habit.RepeatType
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.time.LocalDate

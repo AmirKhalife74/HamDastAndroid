@@ -4,7 +4,7 @@ import android.app.Activity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.hamdast.data.models.HabitModel
+import com.example.hamdast.data.models.habit.HabitModel
 import com.example.hamdast.databinding.AdapterHabbitItemBinding
 import com.example.hamdast.view.viewmodels.HabitViewModel
 
@@ -22,7 +22,7 @@ class HabitListAdapter(
                 tvHabitTitle.text = item.title
                 tvHabitDesc.text = item.desc
                 tvRepeat.text = item.repeatType.name
-                // اینجا می‌تونی با HabitLog چک کنی که امروز انجام شده یا نه
+                // اینجا می‌تونی با com.example.hamdast.data.models.habit.HabitLog چک کنی که امروز انجام شده یا نه
             }
         }
     }

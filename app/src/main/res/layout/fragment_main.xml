@@ -25,23 +25,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="42dp"
-        app:cardCornerRadius="50dp"
-        android:layout_marginEnd="16dp"
-        android:layout_height="42dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
-      <ImageView
-          android:id="@+id/img_avatar"
-          android:src="@drawable/ic_avatar"
-          android:layout_width="42dp"
-          android:layout_height="42dp"
-         />
-    </androidx.cardview.widget.CardView>
-
   </androidx.constraintlayout.widget.ConstraintLayout>
 
 
