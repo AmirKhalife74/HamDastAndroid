@@ -1,32 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView android:layout_width="36dp"
-    android:layout_height="36dp"
-    android:id="@+id/crd_item"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="50dp"
-    app:cardElevation="0dp"
+    android:id="@+id/crd_item"
+    android:layout_width="wrap_content"
+    android:layout_height="94dp"
     android:layout_gravity="center"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    app:cardCornerRadius="18dp"
+    app:cardElevation="0dp">
 
-    <!-- Circular ProgressBar -->
-    <ProgressBar
-        android:id="@+id/prgrs_task_done"
-        style="@android:style/Widget.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:progress="68"
-        android:max="100"
-        android:progressDrawable="@drawable/progress_circle_bg"
-        android:rotation="-90"/>
-
-    <!-- TextView درصد وسط -->
-    <TextView
-        android:id="@+id/tv_progress_done"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <LinearLayout
         android:gravity="center"
-        android:text="12"
-        android:textSize="14sp"
-        android:textColor="?attr/colorPrimary"
-        android:textStyle="bold"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:textAlignment="center"
+            android:id="@+id/tv_name_of_day"
+            android:textSize="10sp"
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="نام روز" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ProgressBar
+                android:id="@+id/prgrs_task_done"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:max="100"
+                android:progress="68"
+                android:progressDrawable="@drawable/progress_circle_bg"
+                android:rotation="-90" />
+
+            <!-- TextView درصد وسط -->
+            <TextView
+                android:id="@+id/tv_progress_done"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="12"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </LinearLayout>
+
 </androidx.cardview.widget.CardView>

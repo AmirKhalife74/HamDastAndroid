@@ -108,7 +108,10 @@ class CalendarFragment : Fragment() {
                 tasksOfDays.add(task)
             }
         }
-        val habitsOfDay = habits.filter { it.shouldShowOn(CalendarDay(day, selectedMonth, selectedYear, true)) }
+        val habitsOfDay = habits.filter { it.shouldShowOn(CalendarDay(
+            day, selectedMonth, selectedYear, true,
+            isToday = false
+        )) }
         showTasks(tasksOfDays)
         showHabits(habitsOfDay)
     }

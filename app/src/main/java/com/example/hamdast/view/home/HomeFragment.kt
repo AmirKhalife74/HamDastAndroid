@@ -12,7 +12,6 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hamdast.R
 import com.example.hamdast.data.models.calendar.CalendarDay
@@ -20,12 +19,12 @@ import com.example.hamdast.data.models.habit.HabitModel
 import com.example.hamdast.data.models.task.TaskModel
 import com.example.hamdast.databinding.FragmentHomeBinding
 import com.example.hamdast.utils.HabitBottomSheetDialog
-import com.example.hamdast.utils.getCurrentWeek
+import com.example.hamdast.utils.getWeeksRange
 import com.example.hamdast.utils.notifications.TaskScheduler
 import com.example.hamdast.utils.shouldShowOn
 import com.example.hamdast.view.home.adapter.HabitListAdapter
 import com.example.hamdast.view.home.adapter.TaskListAdapter
-import com.example.hamdast.view.home.adapter.WeeklyDaysAdapter
+import com.example.hamdast.view.home.adapter.WeeklyAdapter
 import com.example.hamdast.view.viewmodels.HabitViewModel
 import com.example.hamdast.view.viewmodels.TaskViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -80,18 +79,25 @@ class HomeFragment : Fragment() {
     }
     private fun setWeeklyCalendar() {
         binding.apply {
-            items?.let { it ->
-                if (it.isNotEmpty()){
-                    val currentWeek = getCurrentWeek(tasks = it)
-                    val weeklyDaysAdapter = WeeklyDaysAdapter(
-                        items = currentWeek,
+            items?.let { tasks ->
+                if (tasks.isNotEmpty()) {
+                    val weeks = getWeeksRange(tasks = tasks)
+                    val weeklyAdapter = WeeklyAdapter(
+                        weeks = weeks,
                         context = requireContext()
                     )
-                    var layOutMnger = GridLayoutManager(requireContext(),7)
-                    rcWeeklyDays.adapter = weeklyDaysAdapter
-                    rcWeeklyDays.layoutManager = layOutMnger
-                }else{
+                    rcWeeklyDays.adapter = weeklyAdapter
+                    if ( rcWeeklyDays.currentItem >= weeks.size - 2) {
 
+                        val newWeeks = getWeeksRange(tasks, weeksBefore = 0, weeksAfter = 4)
+                        (rcWeeklyDays.adapter as WeeklyAdapter).addWeeks(newWeeks)
+                    } else if (rcWeeklyDays.currentItem <= 2) {
+
+                        val newWeeks = getWeeksRange(tasks, weeksBefore = 4, weeksAfter = 0)
+                        (rcWeeklyDays.adapter as WeeklyAdapter).addWeeksBefore(newWeeks)
+                    }
+                    val currentWeekIndex = weeks.size / 2
+                    rcWeeklyDays.currentItem = currentWeekIndex
                 }
             }
         }
@@ -115,8 +121,9 @@ class HomeFragment : Fragment() {
                     15, 6, 1404, true,
                     tasks = items,
                     habits = habits,
-                    percentageTaskHasBeenDone = 0
-                ) // روز فعلی رو حساب کن
+                    percentageTaskHasBeenDone = 0,
+                    isToday = false
+                )
                 val todayHabits = habits.filter { it.shouldShowOn(today) }
 
                 val adapter = HabitListAdapter(todayHabits, requireActivity(), hobitViewModel)
@@ -131,6 +138,8 @@ class HomeFragment : Fragment() {
             imgAddNew.setOnClickListener {
                 newTask()
             }
+
+
         }
     }
 
@@ -146,6 +155,7 @@ class HomeFragment : Fragment() {
                     viewModel.tasks.collect { it ->
                         val adapter = TaskListAdapter(it, requireActivity(), viewModel)
                         rcTasks.layoutManager = LinearLayoutManager(requireContext())
+
                         rcTasks.adapter = adapter
                     }
                 }
@@ -166,30 +176,16 @@ class HomeFragment : Fragment() {
         binding.apply {
 
             val behavior = BottomSheetBehavior.from(bottomSheet)
-            // Listener برای محاسبه ارتفاع بعد از layout
             topContent.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
-                    // Listener رو حذف کن تا فقط یک بار اجرا بشه
                     topContent.viewTreeObserver.removeOnGlobalLayoutListener(this)
-
-                    // ارتفاع کل top_content (معمولاً برابر screen height چون match_parent)
                     val topHeight = topContent.height
-
-                    // محاسبه paddingBottom (در px)
                     val paddingBottomPx = topContent.paddingBottom
-
-                    // ارتفاع واقعی محتوای top_content بدون paddingBottom
-                    // اگر محتوای داخلی wrap_content باشه، می‌تونی جمع ارتفاع کودکان رو محاسبه کنی، اما ساده‌تر:
                     val displayMetrics = resources.displayMetrics
                     val screenHeight = displayMetrics.heightPixels
-                    val contentHeight = topHeight - paddingBottomPx  // معمولاً screenHeight - paddingBottom
-
-                    // تنظیم peekHeight برای باتم‌شیت: برابر با فضای خالی پایین top_content
-                    // این کار باعث می‌شه در حالت collapsed، باتم‌شیت دقیقاً تا پایین محتوای top_content برسه
-                    val peekHeight = screenHeight - contentHeight  // یا مستقیم paddingBottomPx اگر ثابت باشه
+                    val contentHeight = topHeight - paddingBottomPx
+                    val peekHeight = screenHeight - contentHeight
                     behavior.peekHeight = peekHeight
-
-                    // اختیاری: شروع باتم‌شیت در حالت collapsed
                     behavior.state = BottomSheetBehavior.STATE_COLLAPSED
                 }
             })

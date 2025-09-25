@@ -17,6 +17,16 @@ fun twoDigitConvertor(number: Int): String {
     }
 }
 
+var daysOfWeekInPersian:List<String> = listOf(
+    "شنبه",
+    "یکشنبه",
+    "دوشنبه",
+    "سه شنبه",
+    "چهارشنبه",
+    "پنج شنبه",
+    "جمعه",
+)
+
 @RequiresApi(Build.VERSION_CODES.O)
 fun CalendarDay.dayOfWeek(): Int {
     val localDate = LocalDate.of(year, month, day)

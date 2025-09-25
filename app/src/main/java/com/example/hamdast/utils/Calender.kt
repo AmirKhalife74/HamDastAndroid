@@ -263,7 +263,8 @@ fun generateMonthDays(year: Int, month: Int, tasks: List<TaskModel>): List<Calen
                 i, month = prevMonth, year = prevYear,
                 isCurrentMonth = false,
                 tasks = tasksOfDay,
-                percentageTaskHasBeenDone = 0
+                percentageTaskHasBeenDone = 0,
+                isToday = false,
             )
         )
     }
@@ -280,7 +281,8 @@ fun generateMonthDays(year: Int, month: Int, tasks: List<TaskModel>): List<Calen
                 i, month = month, year = year,
                 isCurrentMonth = true,
                 tasks = tasksOfDay,
-                percentageTaskHasBeenDone = 0
+                percentageTaskHasBeenDone = 0,
+                isToday = false
             )
         )
     }
@@ -302,7 +304,8 @@ fun generateMonthDays(year: Int, month: Int, tasks: List<TaskModel>): List<Calen
                 nextDay, month = nextMonth, year = nextYear,
                 isCurrentMonth = false,
                 tasks = tasksOfDay,
-                percentageTaskHasBeenDone = 0
+                percentageTaskHasBeenDone = 0,
+                isToday = false
             )
         )
         nextDay++
@@ -403,7 +406,7 @@ fun getPersianWeekForDay(day: CalendarDay, tasks: List<TaskModel>): List<Calenda
         week.add(
             CalendarDay(
                 targetDay, targetMonth, targetYear,
-                true, tasksOfDay, null,
+                true,false, tasksOfDay, null,
                 percentageTaskHasBeenDone = 0
             )
         )
@@ -441,10 +444,46 @@ fun getCurrentWeek(tasks: List<TaskModel>): List<CalendarDay> {
         CalendarDay(
             jd, jm, jy, true,
             tasks = mutableListOf<TaskModel>(),
-            percentageTaskHasBeenDone = 0
+            percentageTaskHasBeenDone = 0,
+            isToday = false,
         ),
         tasks = tasks
     )
+}
+
+fun getWeeksRange(
+    tasks: List<TaskModel>,
+    weeksBefore: Int = 4, // تعداد هفته‌های قبل
+    weeksAfter: Int = 4  // تعداد هفته‌های بعد
+): List<List<CalendarDay>> {
+    val weeks = mutableListOf<List<CalendarDay>>()
+    val todayMillis = System.currentTimeMillis()
+    val jy = G2JFromMillis(todayMillis, G2JTypes.YEAR).toInt()
+    val jm = G2JFromMillis(todayMillis, G2JTypes.MONTH).toInt()
+    val jd = G2JFromMillis(todayMillis, G2JTypes.DAY).toInt()
+
+    // تولید هفته‌های گذشته و آینده
+    for (weekOffset in -weeksBefore..weeksAfter) {
+        val weekStartMillis = todayMillis + (weekOffset * 7 * 24 * 60 * 60 * 1000L)
+        val weekJy = G2JFromMillis(weekStartMillis, G2JTypes.YEAR).toInt()
+        val weekJm = G2JFromMillis(weekStartMillis, G2JTypes.MONTH).toInt()
+        val weekJd = G2JFromMillis(weekStartMillis, G2JTypes.DAY).toInt()
+
+        val week = getPersianWeekForDay(
+            CalendarDay(
+                day = weekJd,
+                month = weekJm,
+                year = weekJy,
+                isToday = weekOffset == 0,
+                tasks = mutableListOf<TaskModel>(),
+                percentageTaskHasBeenDone = 0,
+                isCurrentMonth = false
+            ),
+            tasks = tasks
+        )
+        weeks.add(week)
+    }
+    return weeks
 }
 
 fun getTodayPersianDateParts(): Triple<Int, Int, Int> {

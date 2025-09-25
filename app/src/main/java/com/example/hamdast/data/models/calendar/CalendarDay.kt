@@ -8,6 +8,7 @@ data class CalendarDay(
     val month: Int,
     val year: Int,
     val isCurrentMonth: Boolean,
+    val isToday: Boolean,
     val tasks:List<TaskModel>? =  emptyList<TaskModel>(),
     val habits: List<HabitModel>? = emptyList<HabitModel>(),
 //    val isClicked: Boolean,
