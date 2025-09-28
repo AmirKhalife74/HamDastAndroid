@@ -6,6 +6,8 @@
     <string name="profile">پروفایل</string>
     <string name="ai_assistance">همدست</string>
     <string name="calendar">تقویم</string>
+    <string name="monthly">ماهانه</string>
+    <string name="weekly">هفتگی</string>
 
     <string-array name="repeat_types">
         <item>روزانه</item>

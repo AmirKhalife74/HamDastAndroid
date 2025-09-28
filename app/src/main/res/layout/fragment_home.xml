@@ -1,225 +1,296 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/home_bg_gradiant"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/home_bg_gradiant">
 
-   <!-- بخش اول ثابت -->
-   <LinearLayout
-       android:id="@+id/top_content"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:orientation="vertical"
-       android:gravity="top"
+    <!-- بخش اول ثابت -->
+    <LinearLayout
+        android:id="@+id/top_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:orientation="vertical"
 
-       android:padding="16dp">
+        android:padding="16dp">
 
-      <LinearLayout
-          android:orientation="horizontal"
-          android:gravity="center_vertical"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content">
-         <androidx.cardview.widget.CardView
-             app:cardCornerRadius="21dp"
-             app:cardElevation="0dp"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/img_profile"
-                android:src="@drawable/ic_avatar"
-                android:layout_width="42dp"
-                android:layout_height="42dp"/>
-         </androidx.cardview.widget.CardView>
-         <TextView
-             android:text="امروز"
-             android:layout_marginStart="8dp"
-             android:id="@+id/tv_current_day"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-         <View
-             android:layout_width="0dp"
-             android:layout_height="0dp"
-             android:layout_weight="1" />
-         <ImageView
-             android:id="@+id/img_add_new"
-             android:src="@drawable/add_circle"
-             android:layout_width="42dp"
-             android:layout_height="42dp"/>
-      </LinearLayout>
-
-
-
-      <androidx.viewpager2.widget.ViewPager2
-          android:id="@+id/rc_weekly_days"
-          android:orientation="horizontal"
-          android:layout_width="match_parent"
-          android:layout_marginHorizontal="8dp"
-          android:layout_height="110dp"/>
-
-      <com.google.android.material.card.MaterialCardView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_margin="4dp"
-          app:cardBackgroundColor="?android:colorBackground"
-          app:cardElevation="4dp"
-          app:cardCornerRadius="25dp"
-          app:strokeWidth="0dp">
-
-         <LinearLayout
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:layout_gravity="center"
-             android:gravity="center"
-             android:orientation="horizontal">
-
-            <FrameLayout
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center">
-
-               <ProgressBar
-                   android:id="@+id/circularProgressBar"
-                   style="@android:style/Widget.ProgressBar.Horizontal"
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   android:progress="68"
-                   android:max="100"
-                   android:progressDrawable="@drawable/progress_circle_bg"
-                   android:rotation="-90"/>
-
-               <TextView
-                   android:id="@+id/progressText"
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   android:gravity="center"
-                   android:text="28%"
-                   android:textSize="12sp"
-                   android:textColor="?attr/colorPrimary"
-                   android:textStyle="bold"/>
-            </FrameLayout>
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:gravity="center"
-                android:orientation="vertical">
+                app:cardCornerRadius="21dp"
+                app:cardElevation="0dp">
 
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:text="2/3" />
+                <ImageView
+                    android:id="@+id/img_profile"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:src="@drawable/ic_avatar" />
+            </androidx.cardview.widget.CardView>
 
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:text="تکراری" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:gravity="center"
-                android:orientation="vertical">
-
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:text="2/3" />
-
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:text="کارها" />
-            </LinearLayout>
             <TextView
+                android:id="@+id/tv_current_day"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="تقریبا تمومه" />
+                android:layout_marginStart="8dp"
+                android:text="امروز" />
 
-         </LinearLayout>
-      </com.google.android.material.card.MaterialCardView>
-   </LinearLayout>
-
-   <!-- بخش دوم با BottomSheetBehavior برای اسکرول و پوشش -->
-   <com.google.android.material.card.MaterialCardView
-       android:id="@+id/bottomSheet"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       app:strokeWidth="0dp"
-       app:cardElevation="4dp"
-       app:cardBackgroundColor="?android:colorBackground"
-       app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-       app:behavior_peekHeight="auto"
-       app:behavior_fitToContents="true"
-       app:behavior_hideable="false"
-       app:shapeAppearanceOverlay="@style/TopRoundedCard">
-
-      <LinearLayout
-          android:id="@+id/bottomSheetContent"
-          android:orientation="vertical"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent">
-
-         <com.google.android.material.bottomsheet.BottomSheetDragHandleView
-             android:id="@+id/drag_handle"
-             android:layout_width="match_parent"
-             android:layout_height="36dp" />
-
-         <LinearLayout
-             android:id="@+id/lyt_select_mode"
-             android:layout_width="match_parent"
-             android:layout_height="40dp"
-
-             android:layout_marginHorizontal="64dp"
-             app:cornerRadius="21dp"
-             android:background="@drawable/grey_input_box"
-             android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btn_tasks"
+            <View
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:backgroundTint="?attr/colorPrimary"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:text="کارها"
-                android:textColor="@color/dark_text_primary"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:cornerRadius="21dp" />
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+          <Spinner
+              android:id="@+id/drp_calendar_type"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/img_add_new"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:src="@drawable/add_circle" />
+        </LinearLayout>
 
-            <Button
-                android:id="@+id/btn_habits"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:backgroundTint="?attr/colorPrimaryVariant"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:shadowColor="#00FFFFFF"
-                android:text="تکراری"
-                android:textColor="?android:textColorPrimary"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:translationZ="0dp"
-                app:cornerRadius="21dp" />
-         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/weekly_calendar"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-         <androidx.recyclerview.widget.RecyclerView
-             android:id="@+id/rc_tasks"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:orientation="vertical"
-             android:nestedScrollingEnabled="true"
-             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-             tools:listitem="@layout/adapter_task_item" />
-      </LinearLayout>
-   </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:src="@drawable/ic_calendar" />
+
+            <TextView
+                android:id="@+id/tv_selected_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="4dp"
+                android:gravity="center"
+                android:text="آبان"
+                android:textSize="@dimen/large_font_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_selected_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="4dp"
+                android:gravity="center"
+                android:text="۱۴۰۴"
+                android:textSize="@dimen/large_font_size"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/rc_weekly_days"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_marginHorizontal="8dp"
+            android:orientation="horizontal" />
+    </LinearLayout>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/monthly_calendar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/home_bg_gradiant">
+
+            <!-- کنترل ماه -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <ImageView
+                    android:id="@+id/btnPrev"
+                    android:src="@drawable/arrow_left"
+                    android:rotation="180"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+
+                <TextView
+                    android:id="@+id/tvMonth"
+                    android:layout_width="150dp"
+                    android:textAlignment="center"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="آبان ۱۴۰۴"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <ImageView
+                    android:src="@drawable/arrow_left"
+                    android:id="@+id/btnNext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:weightSum="7"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="4dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:textAlignment="center"
+                    android:layout_weight="1"
+                    android:text="ش"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:textAlignment="center"
+                    android:layout_weight="1"
+                    android:text="ی"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:textAlignment="center"
+                    android:layout_weight="1"
+                    android:text="د"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:textAlignment="center"
+                    android:layout_weight="1"
+                    android:text="س"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:textAlignment="center"
+                    android:layout_weight="1"
+                    android:text="چ"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:text="پ"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:textAlignment="center"
+                    android:layout_weight="1"
+                    android:text="ج"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <!-- تقویم -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcCalendar"
+                android:paddingTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/bottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:behavior_fitToContents="true"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="auto"
+        app:cardBackgroundColor="?android:colorBackground"
+        app:cardElevation="4dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        app:shapeAppearanceOverlay="@style/TopRoundedCard"
+        app:strokeWidth="0dp">
+
+        <LinearLayout
+            android:id="@+id/bottomSheetContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+                android:id="@+id/drag_handle"
+                android:layout_width="match_parent"
+                android:layout_height="36dp" />
+
+            <LinearLayout
+                android:id="@+id/lyt_select_mode"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+
+                android:layout_marginHorizontal="64dp"
+                android:background="@drawable/grey_input_box"
+                android:orientation="horizontal"
+                app:cornerRadius="21dp">
+
+                <Button
+                    android:id="@+id/btn_tasks"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="?attr/colorPrimary"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="کارها"
+                    android:textColor="@color/dark_text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="21dp" />
+
+                <Button
+                    android:id="@+id/btn_habits"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="?attr/colorPrimaryVariant"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:shadowColor="#00FFFFFF"
+                    android:text="تکراری"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:translationZ="0dp"
+                    app:cornerRadius="21dp" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rc_tasks"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:nestedScrollingEnabled="true"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                tools:listitem="@layout/adapter_task_item" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

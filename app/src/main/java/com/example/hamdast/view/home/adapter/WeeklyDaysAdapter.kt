@@ -14,6 +14,8 @@ import com.example.hamdast.data.models.calendar.CalendarDay
 import com.example.hamdast.databinding.ItemWeeklyDayBinding
 import com.example.hamdast.utils.daysOfWeekInPersian
 import com.example.hamdast.utils.getTodayPersianDateParts
+import com.example.hamdast.utils.persionMonth
+import okhttp3.internal.trimSubstring
 
 class WeeklyDaysAdapter(
     private val items: List<CalendarDay>,
@@ -35,20 +37,22 @@ class WeeklyDaysAdapter(
                 val isToday = today.first == item.year && today.second == item.month && today.third == item.day
                 val isSelected = selectedDay == item
 
-                // تنظیم رنگ اولیه
+
+
+
                 updateViewColors(isSelected, isToday, animate = false)
 
-                // کلیک روی آیتم
+
                 crdItem.setOnClickListener {
                     val previousSelectedPosition = lastSelectedPosition
                     selectedDay = item
                     lastSelectedPosition = position
                     onDayClicked(item)
 
-                    // به‌روزرسانی آیتم‌های تغییرکرده با انیمیشن
                     if (previousSelectedPosition != -1 && previousSelectedPosition != position) {
-                        updateViewColors(isSelected, isToday, animate = true)
-                        notifyItemChanged(previousSelectedPosition)
+                        updateViewColors(true, isToday, animate = true)
+                        //notifyItemChanged(previousSelectedPosition)
+                        notifyDataSetChanged()
                     }
                     notifyItemChanged(position)
                 }
@@ -74,14 +78,11 @@ class WeeklyDaysAdapter(
                 }
 
                 if (animate) {
-                    // انیمیشن تغییر رنگ برای پس‌زمینه
                     val backgroundAnimator = ValueAnimator.ofObject(ArgbEvaluator(), backgroundColorStart, backgroundColorEnd)
                     backgroundAnimator.duration = 300
                     backgroundAnimator.addUpdateListener { animator ->
                         crdItem.setCardBackgroundColor(animator.animatedValue as Int)
                     }
-
-                    // انیمیشن تغییر رنگ برای متن‌ها
                     val textAnimator = ValueAnimator.ofObject(ArgbEvaluator(), textColorStart, textColorEnd)
                     textAnimator.duration = 300
                     textAnimator.addUpdateListener { animator ->
@@ -98,13 +99,13 @@ class WeeklyDaysAdapter(
                     textAnimator.start()
                     nameTextAnimator.start()
                 } else {
-                    // بدون انیمیشن
+
                     crdItem.setCardBackgroundColor(backgroundColorEnd)
                     tvProgressDone.setTextColor(textColorEnd)
                     tvNameOfDay.setTextColor(nameTextColorEnd)
                 }
 
-                // تنظیم متن و پیشرفت
+
                 tvProgressDone.text = items[adapterPosition].day.toString()
                 items[adapterPosition].percentageTaskHasBeenDone?.let {
                     prgrsTaskDone.progress = it
@@ -121,7 +122,7 @@ class WeeklyDaysAdapter(
                 false
             )
         )
-        viewHolder.setIsRecyclable(false)
+        viewHolder.setIsRecyclable(true)
         return viewHolder
     }
 
@@ -129,6 +130,34 @@ class WeeklyDaysAdapter(
         holder.bind(items[position], position)
     }
 
+    fun getMonth(): String {
+        var month = ""
+        items.forEach { it ->
+
+            if (!month.contains(persionMonth[it.month - 1])) {
+                month = month +"-"+ persionMonth[it.month - 1]
+                if (month.first().toString() == "-") {
+                    month = month.removeRange(0, 1)
+                }
+            }
+        }
+        return month
+        notifyDataSetChanged()
+    }
+
+    fun getYear(): String {
+        var year = ""
+        items.forEach { it ->
+            if (!year.contains((it.year).toString())) {
+                year = year + "-" + it.year
+                if (year.first().toString() == "-") {
+                    year = year.removeRange(0, 1)
+                }
+            }
+        }
+        return year
+        notifyDataSetChanged()
+    }
     override fun getItemCount(): Int = items.size
 
     override fun getItemId(position: Int): Long = position.toLong()
